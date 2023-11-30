@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +17,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Transient;
+import java.util.List;
 
 /**
  *
@@ -32,7 +35,7 @@ import jakarta.persistence.NamedQuery;
     @NamedQuery(name= "Game.findFromTypes",
                 query = "SELECT g FROM Game g  WHERE g.types = :types"),
     @NamedQuery(name= "Game.findAll",
-                query = "SELECT g FROM Game")
+                query = "SELECT g FROM Game g")
 })
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -48,12 +51,14 @@ public class Game implements Serializable {
     
     @ManyToOne
     private Console console;
+    @Transient
+    private int consoleId; 
     
-    @ManyToMany(mappedBy="games")
+    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<GameType> types;
 
     public Game(){
-        types = new ArrayList<GameType>();
+        types = new ArrayList<>();
     }
     
     public int getId() {
@@ -62,6 +67,14 @@ public class Game implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+     public int getConsoleId() {
+        return consoleId;
+    }
+
+    public void setConsoleId(int consoleId) {
+        this.consoleId = consoleId;
     }
     
     public String getName() {
