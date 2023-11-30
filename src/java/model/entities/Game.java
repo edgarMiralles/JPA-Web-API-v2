@@ -17,6 +17,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Transient;
+import java.util.List;
 
 /**
  *
@@ -47,15 +49,16 @@ public class Game implements Serializable {
     @Embedded 
     private Address address;
     
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Console console;
+    @Transient
+    private int consoleId; 
     
-    @ManyToMany(mappedBy="games", cascade = CascadeType.PERSIST)
-
+    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<GameType> types;
 
     public Game(){
-        types = new ArrayList<GameType>();
+        types = new ArrayList<>();
     }
     
     public int getId() {
@@ -64,6 +67,14 @@ public class Game implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+     public int getConsoleId() {
+        return consoleId;
+    }
+
+    public void setConsoleId(int consoleId) {
+        this.consoleId = consoleId;
     }
     
     public String getName() {

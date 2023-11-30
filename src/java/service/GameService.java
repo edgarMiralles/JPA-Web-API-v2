@@ -16,7 +16,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("game")
+@Path("jueguito")
 public class GameService {
     @PersistenceContext(unitName = "Homework1PU")
     private EntityManager em;    
@@ -34,8 +34,8 @@ public class GameService {
             //409
             return Response.status(Response.Status.CONFLICT).entity("Game already exists").build();
         }
-        return Response.status(Response.Status.ACCEPTED).entity("Hola").build();
-        /*game.setName(name);
+        /*return Response.status(Response.Status.ACCEPTED).entity("Hola").build();
+        game.setName(name);
         game.setDescription(description);
         
         Console console = em.find(Console.class, consoleId);
@@ -49,8 +49,8 @@ public class GameService {
             em.persist(type);
         }
         
-        em.persist(game);
-        return Response.ok(game).build();*/
+        em.persist(game);*/
+        return Response.ok(game).build();
     }
     
     private boolean gameExists(String name, int consoleId){
