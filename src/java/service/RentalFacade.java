@@ -35,6 +35,7 @@ public class RentalFacade extends AbstractFacade<Rental> {
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response create(Rental entity, @Context UriInfo uriInfo) {
+        super.find(entity.get)
         RentalDTO rentalDTO = new RentalDTO();
         rentalDTO.setId(entity.getId()); // ID de la renta
         rentalDTO.setPrice(entity.getPrice()); // Precio

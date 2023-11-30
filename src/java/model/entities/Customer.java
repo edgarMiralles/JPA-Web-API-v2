@@ -18,6 +18,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 
 /**
  *
@@ -38,7 +39,8 @@ public class Customer implements Serializable {
     private String name;
     private String email;
     private String password;
-    
+    @Transient
+    private int customerId;
     
     @OneToMany(mappedBy="tenant", cascade = CascadeType.PERSIST)
     private Collection<Rental> rentals;
@@ -54,7 +56,15 @@ public class Customer implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public int getCustomerId() {
+        return customerId;
+    }
 
+    public void setCustomerId(int id) {
+        this.id = customerId;
+    }
+    
     public String getName() {
         return name;
     }

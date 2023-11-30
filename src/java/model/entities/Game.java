@@ -49,10 +49,12 @@ public class Game implements Serializable {
     @Embedded 
     private Address address;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Console console;
     @Transient
     private int consoleId; 
+    @Transient
+    private int gameId;
     
     @ManyToMany(cascade = CascadeType.ALL)
     private Collection<GameType> types;
@@ -67,6 +69,14 @@ public class Game implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int id) {
+        this.id = gameId;
     }
     
      public int getConsoleId() {
