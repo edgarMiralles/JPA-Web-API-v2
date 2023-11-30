@@ -58,7 +58,7 @@ public class Game implements Serializable {
     @Transient
     private int gameId;
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     private Collection<GameType> types;
 
     public Game(){
@@ -78,7 +78,7 @@ public class Game implements Serializable {
     }
 
     public void setGameId(int id) {
-        this.id = gameId;
+        this.gameId = id;
     }
     
      public int getConsoleId() {

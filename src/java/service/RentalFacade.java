@@ -18,7 +18,8 @@ import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.util.List;
 import authn.Secured;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
 import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
@@ -39,19 +40,30 @@ public class RentalFacade extends AbstractFacade<Rental> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response create(Rental entity, @Context UriInfo uriInfo) {
         
-        TypedQuery<Game> query = (TypedQuery<Game>) em.createNamedQuery("Game.findById");
+        
+
+        Query query = em.createNamedQuery("Game.findById", Game.class);
         query.setParameter("id", entity.getRentedGame().getGameId());
-        System.out.println("Hola1111111"+query.getSingleResult());
 
-        
-        TypedQuery<Customer> query2 = (TypedQuery<Customer>) em.createNamedQuery("Customer.findById");
-        query2.setParameter("id", entity.getTenant().getCustomerId());
-        
-        System.out.println("Hola22222"+query2.getSingleResult());
+        try {
+            Game rentedGame = (Game) query.getSingleResult();
+            entity.setRentedGame(rentedGame);
+        } catch (NoResultException e) {
+            // Manejar el caso donde no se encuentra el juego
+            // Puedes lanzar una excepción, imprimir un mensaje, o tomar otra acción según tus necesidades
+            return Response.status(Response.Status.NOT_FOUND).entity("Game not found").build();
+        }
 
-                
-        entity.setRentedGame(query.getSingleResult());
-        entity.setTenant(query2.getSingleResult());
+        query = em.createNamedQuery("Customer.findById", Customer.class);
+        query.setParameter("id", entity.getTenant().getCustomerId());
+
+        try {
+            Customer tenant = (Customer) query.getSingleResult();
+            entity.setTenant(tenant);
+        } catch (NoResultException e) {
+            // Manejar el caso donde no se encuentra el cliente
+            return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
+        }
         
         RentalDTO rentalDTO = new RentalDTO();
         rentalDTO.setId(entity.getId()); // ID de la renta
@@ -66,7 +78,7 @@ public class RentalFacade extends AbstractFacade<Rental> {
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
         uriBuilder.path(Integer.toString(entity.getId())); // Asumiendo que getId() devuelve la ID de la entidad
 
-        return Response.created(uriBuilder.build()).entity(super.find(entity.getId())).build();
+        return Response.created(uriBuilder.build()).entity(rentalDTO).build();
     }
 
     @PUT
@@ -81,14 +93,21 @@ public class RentalFacade extends AbstractFacade<Rental> {
     public void remove(@PathParam("id") Long id) {
         super.remove(super.find(id));
     }
-
+    
     @GET
     @Secured
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response find(@PathParam("id") Long id) {
-        return Response.ok().entity(super.find(id)).build();
+    public Response find(@PathParam("id") int id) {
+        Rental rental = super.find(id);
+
+        if (rental != null) {
+            return Response.ok().entity(rental).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Rental not found for id: " + id).build();
+        }
     }
+
 
     @GET
     @Override

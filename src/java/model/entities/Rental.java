@@ -3,17 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model.entities;
-
-import jakarta.persistence.CascadeType;
 import java.io.Serializable;
-import java.util.Collection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.Date;
 import jakarta.persistence.Column;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -41,10 +37,11 @@ public class Rental implements Serializable {
     @Temporal(TemporalType.DATE)
     @Column(name = "FINALDATE")
     private Date finalDate;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    
+    @ManyToOne
     private Game rentedGame;
     
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Customer tenant;
 
     public int getId() {

@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ public class Customer implements Serializable {
     @Transient
     private int customerId;
     
-    @OneToMany(mappedBy="tenant", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="tenant")
+    @JsonbTransient
     private Collection<Rental> rentals;
     
     public Customer(){
@@ -62,7 +64,7 @@ public class Customer implements Serializable {
     }
 
     public void setCustomerId(int id) {
-        this.id = customerId;
+        this.customerId = id;
     }
     
     public String getName() {
