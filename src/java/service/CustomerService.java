@@ -5,7 +5,6 @@
 package service;
 
 import model.entities.Customer;
-import model.entities.Rental;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;

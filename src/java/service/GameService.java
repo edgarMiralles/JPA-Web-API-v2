@@ -1,11 +1,7 @@
 package service;
 
 import authn.Secured;
-import model.entities.Console;
 import model.entities.Game;
-import model.entities.GameType;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

@@ -8,17 +8,11 @@ import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Persistence;
 
 /**
  *

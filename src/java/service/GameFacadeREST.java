@@ -13,17 +13,14 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import model.entities.Comment;
 import authn.Secured;
 import jakarta.persistence.Query;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
-import java.util.Collection;
 import model.entities.Console;
 import model.entities.Game;
-import model.entities.GameType;
 
 @Stateless
 @Path("game")

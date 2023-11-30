@@ -5,7 +5,6 @@
 package model.entities;
 
 import jakarta.json.bind.annotation.JsonbTransient;
-import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +12,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
