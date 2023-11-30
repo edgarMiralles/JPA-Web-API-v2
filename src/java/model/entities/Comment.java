@@ -1,5 +1,6 @@
 package model.entities;
 
+import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class Comment implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Comment_Gen") 
     private Long id;
     private String message;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     //@NotNull
     private Topic topic;
 

@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +33,7 @@ import jakarta.persistence.NamedQuery;
     @NamedQuery(name= "Game.findFromTypes",
                 query = "SELECT g FROM Game g  WHERE g.types = :types"),
     @NamedQuery(name= "Game.findAll",
-                query = "SELECT g FROM Game")
+                query = "SELECT g FROM Game g")
 })
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -46,10 +47,11 @@ public class Game implements Serializable {
     @Embedded 
     private Address address;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Console console;
     
-    @ManyToMany(mappedBy="games")
+    @ManyToMany(mappedBy="games", cascade = CascadeType.PERSIST)
+
     private Collection<GameType> types;
 
     public Game(){

@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.Collection;
 import jakarta.persistence.Entity;
@@ -40,12 +41,10 @@ public class Rental implements Serializable {
     @Temporal(TemporalType.DATE)
     @Column(name = "FINALDATE")
     private Date finalDate;
-
-    
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Game rentedGame;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Customer tenant;
 
     public int getId() {

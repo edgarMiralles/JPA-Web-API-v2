@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +32,7 @@ public class Console implements Serializable {
     private int id;
     private String name;
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     private Collection<Game> games;
     
     public Console(){

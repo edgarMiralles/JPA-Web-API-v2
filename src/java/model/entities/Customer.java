@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +40,7 @@ public class Customer implements Serializable {
     private String password;
     
     
-    @OneToMany(mappedBy="tenant")
+    @OneToMany(mappedBy="tenant", cascade = CascadeType.PERSIST)
     private Collection<Rental> rentals;
     
     public Customer(){

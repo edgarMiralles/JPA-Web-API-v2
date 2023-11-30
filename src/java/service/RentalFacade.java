@@ -39,8 +39,8 @@ public class RentalFacade extends AbstractFacade<Rental> {
         rentalDTO.setId(entity.getId()); // ID de la renta
         rentalDTO.setPrice(entity.getPrice()); // Precio
         rentalDTO.setFinalDate(entity.getFinalDate()); // Fecha de retorno (puedes ajustarla según tus necesidades)
-
-        entity.getTenant().getRentals().add(entity);
+        
+        //entity.getTenant().getRentals().add(entity);
 
         super.create(entity);
 
