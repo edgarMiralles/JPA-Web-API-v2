@@ -4,13 +4,14 @@
  */
 package model.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Usuario
  */
-public class RentalDTO {
+public class RentalDTO implements Serializable{
     private int id;
     private float price;
     private Date finalDate;
