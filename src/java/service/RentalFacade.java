@@ -1,6 +1,5 @@
 package service;
 
-import java.util.List;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -12,37 +11,15 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-import model.entities.Comment;
-import authn.Secured;
-import jakarta.ws.rs.core.Response;
-import authn.Secured;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Application;
-import jakarta.ws.rs.core.MediaType;
-import model.entities.Customer;
-import model.entities.Game;
-import model.entities.Rental;
-import model.entities.RentalDTO;
-import jakarta.ws.rs.core.Application;
-import jakarta.json.Json;
-import jakarta.persistence.EntityManager;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
-
+import java.util.List;
+import authn.Secured;
+import model.entities.Rental;
+import model.entities.RentalDTO;
 
 @Stateless
 @Path("rental")
