@@ -26,6 +26,8 @@ import java.util.List;
  */
 @Entity
 @NamedQueries({
+    @NamedQuery(name = "Game.findById",
+                query = "SELECT g FROM Game g WHERE g.id = :id"),
     @NamedQuery(name = "Game.findByDetails",
                 query = "SELECT g FROM Game g WHERE g.name = :name AND g.console.id = :consoleId"),
     @NamedQuery(name= "Game.findFromTypesAndConsole",

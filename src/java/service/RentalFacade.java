@@ -18,6 +18,9 @@ import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.util.List;
 import authn.Secured;
+import jakarta.persistence.TypedQuery;
+import model.entities.Customer;
+import model.entities.Game;
 import model.entities.Rental;
 import model.entities.RentalDTO;
 
@@ -35,7 +38,21 @@ public class RentalFacade extends AbstractFacade<Rental> {
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response create(Rental entity, @Context UriInfo uriInfo) {
-        super.find(entity.get)
+        
+        TypedQuery<Game> query = (TypedQuery<Game>) em.createNamedQuery("Game.findById");
+        query.setParameter("id", entity.getRentedGame().getGameId());
+        System.out.println("Hola1111111"+query.getSingleResult());
+
+        
+        TypedQuery<Customer> query2 = (TypedQuery<Customer>) em.createNamedQuery("Customer.findById");
+        query2.setParameter("id", entity.getTenant().getCustomerId());
+        
+        System.out.println("Hola22222"+query2.getSingleResult());
+
+                
+        entity.setRentedGame(query.getSingleResult());
+        entity.setTenant(query2.getSingleResult());
+        
         RentalDTO rentalDTO = new RentalDTO();
         rentalDTO.setId(entity.getId()); // ID de la renta
         rentalDTO.setPrice(entity.getPrice()); // Precio
