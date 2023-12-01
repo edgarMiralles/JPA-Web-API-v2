@@ -5,21 +5,15 @@
         <group>
             <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Game.java</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Customer.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/GameType.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/RentalDTO.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/RentalFacadeREST.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/RESTapp.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/GameService.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/AbstractFacade.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Console.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Rental.java</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/CustomerFacadeREST.java</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/utilities/db.sql</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Topic.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/GameTypesService.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/GameFacadeREST.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/ConsoleService.java</file>
-            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Comment.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/GameType.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/RentalDTO.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/RentalFacadeREST.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/service/CommentFacadeREST.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Console.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Rental.java</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/JPA-Web-API-v2/src/java/model/entities/Address.java</file>
         </group>
     </open-files>

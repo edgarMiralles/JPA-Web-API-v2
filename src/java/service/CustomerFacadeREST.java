@@ -49,21 +49,43 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Long id, Customer entity) {
         try {
+            if (entity == null) {
+                // Si el JSON es nulo, retornar un error
+                return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
+            }
+
             Query findCustomerId = em.createNamedQuery("Customer.findById");
             findCustomerId.setParameter("id", id);
-            Customer existingCustomer = (Customer) findCustomerId.getSingleResult();
 
-            existingCustomer.setName(entity.getName());
-            existingCustomer.setEmail(entity.getEmail());
-            existingCustomer.setPassword(entity.getPassword());
-            existingCustomer.setId(entity.getId());        
-            existingCustomer.getRentals().retainAll(entity.getRentals());                                                          
-            super.edit(existingCustomer);
-            return Response.status(Response.Status.OK).build();
-        } catch (NoResultException e) {
-            // Manejar el caso donde no se encuentra el cliente
-            System.out.println("Customer not found with id: " + id);
-            return Response.status(Response.Status.NOT_FOUND).entity("There is no customer with id: " + id).build();
+            try {
+                Customer existingCustomer = (Customer) findCustomerId.getSingleResult();
+
+                // Actualizar solo los atributos no nulos
+                if (entity.getName() != null) {
+                    existingCustomer.setName(entity.getName());
+                }
+                if (entity.getEmail() != null) {
+                    existingCustomer.setEmail(entity.getEmail());
+                }
+                if (entity.getPassword() != null) {
+                    existingCustomer.setPassword(entity.getPassword());
+                }
+
+                // Retener solo las rentals que existen en el JSON
+                if (entity.getRentals() != null) {
+                    existingCustomer.getRentals().retainAll(entity.getRentals());
+                }
+
+                super.edit(existingCustomer);
+
+                return Response.status(Response.Status.OK).build();
+            } catch (NoResultException e) {
+                // Manejar el caso donde no se encuentra el cliente
+                return Response.status(Response.Status.NOT_FOUND).entity("There is no customer with id: " + id).build();
+            }
+        } catch (Exception e) {
+            // Manejar otras excepciones
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 

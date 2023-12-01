@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model.entities;
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,10 +37,14 @@ public class Rental implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private float price;
+    
     @Temporal(TemporalType.DATE)
+    @JsonbTransient
     private Date startDate;
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "FINALDATE")
+    @JsonbTransient
     private Date finalDate;
     
     @Transient

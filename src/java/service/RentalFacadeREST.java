@@ -43,9 +43,9 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @SuppressWarnings("null")
     public Response create(Rental entity, @Context UriInfo uriInfo) {
-        
-
+               
         try {
             Collection<Game> rentedGames = new ArrayList<>(); // Inicializa la colección
             Query query = em.createNamedQuery("Game.findById", Game.class);
@@ -69,19 +69,28 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
         }
         
-        RentalDTO rentalDTO = new RentalDTO();
-        rentalDTO.setId(entity.getId()); // ID de la renta
-        rentalDTO.setPrice(entity.getPrice()); // Precio
-        rentalDTO.setFinalDate(entity.getFinalDate()); // Fecha de retorno (puedes ajustarla según tus necesidades)
-        
-        entity.getTenant().getRentals().add(entity);
-        super.create(entity);
+        try{
+            RentalDTO rentalDTO = new RentalDTO();
+            rentalDTO.setId(entity.getId()); // ID de la renta
+            rentalDTO.setPrice(entity.getPrice()); // Precio
+            rentalDTO.setFinalDate(entity.getFinalDate()); // Fecha de retorno (puedes ajustarla según tus necesidades)
 
-        // Construir la URI de la entidad creada
-        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-        uriBuilder.path(Integer.toString(entity.getId())); // Asumiendo que getId() devuelve la ID de la entidad
+            entity.getTenant().getRentals().add(entity);
+            super.create(entity);
+            
+            Integer numero = null;          
+            numero = Integer.valueOf(entity.getId());
+            
+            // Construir la URI de la entidad creada
+            UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+            uriBuilder.path(Integer.toString(entity.getId())); // Asumiendo que getId() devuelve la ID de la entidad
 
-        return Response.created(uriBuilder.build()).entity(rentalDTO).build();
+            return Response.created(uriBuilder.build()).entity(rentalDTO).build();
+        }catch(NullPointerException e){
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing required attribute").build();
+        }catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing required attribute").build();
+         }     
     }
 
     @PUT
