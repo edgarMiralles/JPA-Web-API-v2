@@ -8,9 +8,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
- * @author Usuario
+ * Author:  jordi
+ * Created: 01 dec 2023
  */
+
 public class RentalDTO implements Serializable{
     private int id;
     private float price;

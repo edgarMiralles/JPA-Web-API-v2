@@ -10,18 +10,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.Date;
 import jakarta.persistence.Column;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
+import java.util.Collection;
 
 
 /**
  *
- * @author edgar
+ * @author jotdi
  */
+
 @NamedQueries({
     @NamedQuery(name = "Rental.findById",
                 query = "SELECT r FROM Rental r WHERE r.id = :id")
@@ -40,12 +43,12 @@ public class Rental implements Serializable {
     private Date finalDate;
     
     @Transient
-    private int gameId;
+    private int[] gameId;
     @Transient
     private int customerId;
     
-    @ManyToOne
-    private Game rentedGame;
+    @ManyToMany
+    private Collection<Game> rentedGames;
     
     @ManyToOne
     private Customer tenant;
@@ -69,11 +72,11 @@ public class Rental implements Serializable {
         this.customerId = id;
     }
     
-    public int getGameId() {
+    public int[] getGameId() {
         return gameId;
     }
 
-    public void setGameId(int id) {
+    public void setGameId(int[] id) {
         this.gameId = id;
     }
     
@@ -101,12 +104,12 @@ public class Rental implements Serializable {
         this.finalDate = finalDate;
     }
 
-    public Game getRentedGame() {
-        return rentedGame;
+    public Collection<Game> getGames() {
+        return rentedGames;
     }
 
-    public void setRentedGame(Game rentedGame) {
-        this.rentedGame = rentedGame;
+    public void setGames(Collection<Game> games) {
+        this.rentedGames = games;
     }
 
     public Customer getTenant() {

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
  */
 /**
- * Author:  edgar
+ * Author:  edgar y jordi
  * Created: 30 nov 2023
  */
 INSERT INTO CREDENTIALS (ID, USERNAME, PASSWORD) VALUES (1, 'root', 'root')

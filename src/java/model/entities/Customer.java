@@ -19,7 +19,7 @@ import jakarta.persistence.Transient;
 
 /**
  *
- * @author edgar
+ * @author edgar y jordi
  */
 @NamedQueries({
     @NamedQuery(name = "Customer.findById",

@@ -20,19 +20,24 @@ import java.util.List;
 import authn.Secured;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
+import java.util.ArrayList;
+import java.util.Collection;
 import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
 import model.entities.RentalDTO;
-
+/**
+ * Author:  jordi
+ * Created: 01 dec 2023
+ */
 @Stateless
 @Path("rental")
-public class RentalFacade extends AbstractFacade<Rental> {
+public class RentalFacadeREST extends AbstractFacade<Rental> {
 
     @PersistenceContext(unitName = "Homework1PU")
     private EntityManager em;
 
-    public RentalFacade() {
+    public RentalFacadeREST() {
         super(Rental.class);
     }
 
@@ -40,21 +45,23 @@ public class RentalFacade extends AbstractFacade<Rental> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response create(Rental entity, @Context UriInfo uriInfo) {
         
-        Query query = em.createNamedQuery("Game.findById", Game.class);
-        query.setParameter("id", entity.getGameId());
 
         try {
-            Game rentedGame = (Game) query.getSingleResult();
-            entity.setRentedGame(rentedGame);
+            Collection<Game> rentedGames = new ArrayList<>(); // Inicializa la colección
+            Query query = em.createNamedQuery("Game.findById", Game.class);
+            for(int idGame:entity.getGameId()){
+                query.setParameter("id", idGame);
+                rentedGames.add((Game) query.getSingleResult());
+            }
+            entity.setGames(rentedGames);
         } catch (NoResultException e) {
             // Manejar el caso donde no se encuentra el juego
             return Response.status(Response.Status.NOT_FOUND).entity("Game not found").build();
         }
 
-        query = em.createNamedQuery("Customer.findById", Customer.class);
-        query.setParameter("id", entity.getCustomerId());
-
         try {
+            Query query = em.createNamedQuery("Customer.findById", Customer.class);
+            query.setParameter("id", entity.getCustomerId());
             Customer tenant = (Customer) query.getSingleResult();
             entity.setTenant(tenant);
         } catch (NoResultException e) {
@@ -68,7 +75,6 @@ public class RentalFacade extends AbstractFacade<Rental> {
         rentalDTO.setFinalDate(entity.getFinalDate()); // Fecha de retorno (puedes ajustarla según tus necesidades)
         
         entity.getTenant().getRentals().add(entity);
-
         super.create(entity);
 
         // Construir la URI de la entidad creada

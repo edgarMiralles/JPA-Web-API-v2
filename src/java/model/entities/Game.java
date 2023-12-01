@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import jakarta.persistence.Transient;
 
 /**
  *
- * @author edgar
+ * @author edgar y jordi
  */
 @Entity
 @NamedQueries({
@@ -52,12 +53,18 @@ public class Game implements Serializable {
     
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Console console;
+    
     @Transient
     private int consoleId; 
     
     @ManyToMany
     private Collection<GameType> types;
+    
+    @ManyToMany(mappedBy="rentedGames", cascade = CascadeType.PERSIST)
+    @JsonbTransient
 
+    private Collection<Rental> rentals;
+    
     public Game(){
         types = new ArrayList<>();
     }
@@ -125,7 +132,15 @@ public class Game implements Serializable {
     public void setTypes(Collection<GameType> types) {
         this.types = types;
     }
+    
+    public Collection<Rental> getRentals() {
+        return rentals;
+    }
 
+    public void setRentals(Collection<Rental> rentals) {
+        this.rentals = rentals;
+    }
+    
     @Override
     public String toString() {
         return "Game[ id=" + id + " ]";
