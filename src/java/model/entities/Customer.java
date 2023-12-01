@@ -36,8 +36,6 @@ public class Customer implements Serializable {
     private String name;
     private String email;
     private String password;
-    @Transient
-    private int customerId;
     
     @OneToMany(mappedBy="tenant")
     @JsonbTransient
@@ -53,14 +51,6 @@ public class Customer implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-    
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int id) {
-        this.customerId = id;
     }
     
     public String getName() {

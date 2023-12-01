@@ -15,6 +15,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 
 
 /**
@@ -38,12 +39,20 @@ public class Rental implements Serializable {
     @Column(name = "FINALDATE")
     private Date finalDate;
     
+    @Transient
+    private int gameId;
+    @Transient
+    private int customerId;
+    
     @ManyToOne
     private Game rentedGame;
     
     @ManyToOne
     private Customer tenant;
 
+
+        
+        
     public int getId() {
         return id;
     }
@@ -51,7 +60,23 @@ public class Rental implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public int getCustomerId() {
+        return customerId;
+    }
 
+    public void setCustomerId(int id) {
+        this.customerId = id;
+    }
+    
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int id) {
+        this.gameId = id;
+    }
+    
     public float getPrice() {
         return price;
     }

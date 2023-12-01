@@ -40,22 +40,19 @@ public class RentalFacade extends AbstractFacade<Rental> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response create(Rental entity, @Context UriInfo uriInfo) {
         
-        
-
         Query query = em.createNamedQuery("Game.findById", Game.class);
-        query.setParameter("id", entity.getRentedGame().getGameId());
+        query.setParameter("id", entity.getGameId());
 
         try {
             Game rentedGame = (Game) query.getSingleResult();
             entity.setRentedGame(rentedGame);
         } catch (NoResultException e) {
             // Manejar el caso donde no se encuentra el juego
-            // Puedes lanzar una excepción, imprimir un mensaje, o tomar otra acción según tus necesidades
             return Response.status(Response.Status.NOT_FOUND).entity("Game not found").build();
         }
 
         query = em.createNamedQuery("Customer.findById", Customer.class);
-        query.setParameter("id", entity.getTenant().getCustomerId());
+        query.setParameter("id", entity.getCustomerId());
 
         try {
             Customer tenant = (Customer) query.getSingleResult();
@@ -70,7 +67,7 @@ public class RentalFacade extends AbstractFacade<Rental> {
         rentalDTO.setPrice(entity.getPrice()); // Precio
         rentalDTO.setFinalDate(entity.getFinalDate()); // Fecha de retorno (puedes ajustarla según tus necesidades)
         
-        //entity.getTenant().getRentals().add(entity);
+        entity.getTenant().getRentals().add(entity);
 
         super.create(entity);
 

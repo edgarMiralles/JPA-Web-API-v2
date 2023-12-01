@@ -54,8 +54,6 @@ public class Game implements Serializable {
     private Console console;
     @Transient
     private int consoleId; 
-    @Transient
-    private int gameId;
     
     @ManyToMany
     private Collection<GameType> types;
@@ -70,14 +68,6 @@ public class Game implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-    
-    public int getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(int id) {
-        this.gameId = id;
     }
     
      public int getConsoleId() {
