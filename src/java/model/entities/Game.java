@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -28,12 +30,12 @@ import java.util.List;
 @NamedQueries({
     @NamedQuery(name = "Game.findByDetails",
                 query = "SELECT g FROM Game g WHERE g.name = :name AND g.console.id = :consoleId"),
-    @NamedQuery(name= "Game.findFromTypesAndConsole",
-                query = "SELECT g FROM Game g  WHERE g.console = :console AND g.types = :types"),
-    @NamedQuery(name= "Game.findFromConsole",
-                query = "SELECT g FROM Game g  WHERE g.console = :console"),
-    @NamedQuery(name= "Game.findFromTypes",
-                query = "SELECT g FROM Game g  WHERE g.types = :types"),
+    @NamedQuery(name= "Game.findByTypesAndConsole",
+                query = "SELECT DISTINCT g FROM Game g WHERE g.console.id = :consoleId AND g.types IN :typeIds"),
+    @NamedQuery(name= "Game.findByConsole",
+                query = "SELECT g FROM Game g WHERE g.console.id = :consoleId"),
+    @NamedQuery(name= "Game.findByTypes",
+                query = "SELECT DISTINCT g FROM Game g WHERE g.types IN :typeIds"),
     @NamedQuery(name= "Game.findAll",
                 query = "SELECT g FROM Game g")
 })
@@ -52,13 +54,17 @@ public class Game implements Serializable {
     @ManyToOne
     private Console console;
     @Transient
-    private int consoleId; 
+    private Long consoleId; 
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
+    @JsonbTransient
     private Collection<GameType> types;
+    @Transient
+    private Collection<Long> typeIds;
 
     public Game(){
         types = new ArrayList<>();
+        typeIds = new ArrayList<>();
     }
     
     public int getId() {
@@ -69,11 +75,11 @@ public class Game implements Serializable {
         this.id = id;
     }
     
-     public int getConsoleId() {
+     public Long getConsoleId() {
         return consoleId;
     }
 
-    public void setConsoleId(int consoleId) {
+    public void setConsoleId(Long consoleId) {
         this.consoleId = consoleId;
     }
     
@@ -123,6 +129,14 @@ public class Game implements Serializable {
 
     public void setTypes(Collection<GameType> types) {
         this.types = types;
+    }
+    
+    public Collection<Long> getTypeIds() {
+        return typeIds;
+    }
+
+    public void setTypeIds(Collection<Long> typeIds) {
+        this.typeIds = typeIds;
     }
 
     @Override

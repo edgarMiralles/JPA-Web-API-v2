@@ -7,12 +7,12 @@ package model.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 
 /**
@@ -21,12 +21,12 @@ import jakarta.persistence.NamedQuery;
  */
 @Entity
 @NamedQuery(name = "GameType.findIn",
-            query = "SELECT e FROM GameType e WHERE e.id IN :ids")
+        query = "SELECT e FROM GameType e WHERE e.id IN :ids")
 public class GameType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     private String name;
     
     @ManyToMany(mappedBy="types")
@@ -36,11 +36,11 @@ public class GameType implements Serializable {
         games = new ArrayList<>();
     }
     
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

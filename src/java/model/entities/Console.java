@@ -28,7 +28,7 @@ public class Console implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     private String name;
     
     @OneToMany
@@ -38,11 +38,11 @@ public class Console implements Serializable {
         games = new ArrayList<Game>();
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
