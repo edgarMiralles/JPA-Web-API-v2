@@ -4,6 +4,7 @@
  */
 package model.entities;
 import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +16,11 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 
 
@@ -34,46 +37,44 @@ import java.util.Collection;
 public class Rental implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rental_seq")
+    @SequenceGenerator(name = "rental_seq", sequenceName = "RENTAL_SEQ", allocationSize = 1)
+    private String id;
     private float price;
     
     @Temporal(TemporalType.DATE)
-    @JsonbTransient
     private Date startDate;
     
     @Temporal(TemporalType.DATE)
     @Column(name = "FINALDATE")
-    @JsonbTransient
     private Date finalDate;
     
     @Transient
+    @NotNull
     private int[] gameId;
     @Transient
-    private int customerId;
+    @NotNull
+    private String customerId;
     
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private Collection<Game> rentedGames;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Customer tenant;
-
-
         
-        
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int id) {
+    public void setCustomerId(String id) {
         this.customerId = id;
     }
     

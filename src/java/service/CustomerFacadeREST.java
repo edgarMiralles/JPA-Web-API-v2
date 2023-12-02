@@ -1,5 +1,6 @@
 package service;
 
+import authn.Secured;
 import java.util.List;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -15,6 +16,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,8 +48,10 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
 
     @PUT
     @Path("{id}")
+    @Secured
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response edit(@PathParam("id") Long id, Customer entity) {
+    @Transactional
+    public Response edit(@PathParam("id") String id, Customer entity) {
         try {
             if (entity == null) {
                 // Si el JSON es nulo, retornar un error
@@ -64,9 +68,11 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
                 if (entity.getName() != null) {
                     existingCustomer.setName(entity.getName());
                 }
+                
                 if (entity.getEmail() != null) {
                     existingCustomer.setEmail(entity.getEmail());
                 }
+                
                 if (entity.getPassword() != null) {
                     existingCustomer.setPassword(entity.getPassword());
                 }
@@ -84,14 +90,13 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
                 return Response.status(Response.Status.NOT_FOUND).entity("There is no customer with id: " + id).build();
             }
         } catch (Exception e) {
-            // Manejar otras excepciones
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("There is no customer with id: " + id).build();
         }
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
+    public void remove(@PathParam("id") String id) {
         super.remove(super.find(id));
     }
     
@@ -118,7 +123,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response find(@PathParam("id") Long id) {
+    public Response find(@PathParam("id") String id) {
         try {
             Query findCustomerId = em.createNamedQuery("Customer.findById"); 
             findCustomerId.setParameter("id",id);

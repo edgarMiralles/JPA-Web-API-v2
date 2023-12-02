@@ -21,7 +21,10 @@ import authn.Secured;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.stream.Collectors;
 import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
@@ -42,55 +45,78 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     }
 
     @POST
+    @Secured
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @SuppressWarnings("null")
     public Response create(Rental entity, @Context UriInfo uriInfo) {
                
         try {
-            Collection<Game> rentedGames = new ArrayList<>(); // Inicializa la colección
-            Query query = em.createNamedQuery("Game.findById", Game.class);
-            for(int idGame:entity.getGameId()){
-                query.setParameter("id", idGame);
-                rentedGames.add((Game) query.getSingleResult());
+            if (entity == null) {
+                // Si el JSON es nulo, retornar un error
+                return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
             }
-            entity.setGames(rentedGames);
+
+            List<Integer> gameIdList = Arrays.stream(entity.getGameId()).boxed().collect(Collectors.toList());
+
+            List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
+                    .setParameter("ids", gameIdList)
+                    .getResultList();
+            
+            for(Game game : games){
+                // Obtener el stock actual
+                int currentStock = game.getStock();
+
+                // Reducir el stock en 1
+                game.setStock(currentStock - 1);
+
+                // Verificar si el stock es cero
+                if (game.getStock() <= 0) {
+                    // Stock agotado, lanzar respuesta erronea
+                    return Response.status(Response.Status.BAD_REQUEST).entity("Stock of game '" + game.getName() + "' is depleted.").build();
+                }
+            }
+            
+            entity.setGames(games);
+            
         } catch (NoResultException e) {
             // Manejar el caso donde no se encuentra el juego
             return Response.status(Response.Status.NOT_FOUND).entity("Game not found").build();
         }
 
-        try {
-            Query query = em.createNamedQuery("Customer.findById", Customer.class);
-            query.setParameter("id", entity.getCustomerId());
-            Customer tenant = (Customer) query.getSingleResult();
+        try {        
+            Customer tenant = em.find(Customer.class,entity.getCustomerId());
+            tenant.getRentals().add(entity);
             entity.setTenant(tenant);
-        } catch (NoResultException e) {
+        } catch (Exception e) {
             // Manejar el caso donde no se encuentra el cliente
             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
         }
         
-        try{
+        try{                    
+            String customerId = entity.getCustomerId();
+
+            // Concatenar el ID del cliente y el número de rentas
+            String rentalId = String.valueOf(customerId)+"_"+String.valueOf(em.find(Customer.class, customerId).getRentals().size());
+            entity.setId(rentalId); // Establecer la ID generada
+
             RentalDTO rentalDTO = new RentalDTO();
             rentalDTO.setId(entity.getId()); // ID de la renta
             rentalDTO.setPrice(entity.getPrice()); // Precio
             rentalDTO.setFinalDate(entity.getFinalDate()); // Fecha de retorno (puedes ajustarla según tus necesidades)
+            
+            // Recuperar el ID del cliente
 
-            entity.getTenant().getRentals().add(entity);
-            super.create(entity);
-            
-            Integer numero = null;          
-            numero = Integer.valueOf(entity.getId());
-            
             // Construir la URI de la entidad creada
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            uriBuilder.path(Integer.toString(entity.getId())); // Asumiendo que getId() devuelve la ID de la entidad
-
+            uriBuilder.path(entity.getId()); // Asumiendo que getId() devuelve la ID de la entidad
+            
+            super.create(entity);   
+            
             return Response.created(uriBuilder.build()).entity(rentalDTO).build();
         }catch(NullPointerException e){
             return Response.status(Response.Status.BAD_REQUEST).entity("Missing required attribute").build();
         }catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Missing required attribute").build();
-         }     
+        }     
     }
 
     @PUT

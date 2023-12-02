@@ -28,6 +28,8 @@ import jakarta.persistence.Transient;
 @NamedQueries({
     @NamedQuery(name = "Game.findById",
                 query = "SELECT g FROM Game g WHERE g.id = :id"),
+    @NamedQuery(name = "Game.findIn",
+                query = "SELECT g FROM Game g WHERE g.id IN :ids"),
     @NamedQuery(name = "Game.findByDetails",
                 query = "SELECT g FROM Game g WHERE g.name = :name AND g.console.id = :consoleId"),
     @NamedQuery(name= "Game.findFromTypesAndConsole",

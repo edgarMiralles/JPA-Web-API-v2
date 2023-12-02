@@ -13,24 +13,24 @@ import java.util.Date;
  */
 
 public class RentalDTO implements Serializable{
-    private int id;
+    private String id;
     private float price;
     private Date finalDate;
     
     public RentalDTO(){
     }
     
-    public RentalDTO(int id, float price, Date finalDate){
+    public RentalDTO(String id, float price, Date finalDate){
         this.id = id;
         this.price = price;
         this.finalDate = finalDate;
     }
     
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

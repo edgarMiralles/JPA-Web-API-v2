@@ -32,7 +32,7 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
     
     private String name;
     private String email;
@@ -46,11 +46,11 @@ public class Customer implements Serializable {
         rentals = new ArrayList<Rental>();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     
