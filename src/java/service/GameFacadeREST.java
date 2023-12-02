@@ -157,7 +157,7 @@ public class GameFacadeREST extends AbstractFacade<Game> {
             int typeValidationResult = filterParams.validateTypes(em);
             if (typeValidationResult == -1) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("La lista de 'types' debe contener solo números enteros positivos.")
+                        .entity("The list of 'types' must contain only positive integers.")
                         .build();
             } else if (typeValidationResult == -2) {
                 return Response.status(Response.Status.NOT_FOUND).entity("GameType not Found").build();
@@ -168,7 +168,7 @@ public class GameFacadeREST extends AbstractFacade<Game> {
             int consoleValidationResult = filterParams.validateConsole(em);
             if (consoleValidationResult == -1) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("El parámetro 'console' debe ser un número entero positivo.")
+                        .entity("The 'console' parameter must be a positive integer.")
                         .build();
             } else if (consoleValidationResult == -2) {
                 return Response.status(Response.Status.NOT_FOUND).entity("Console not Found").build();

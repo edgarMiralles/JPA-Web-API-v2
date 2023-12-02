@@ -127,9 +127,9 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     @Secured
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response find(@PathParam("id") int id) {
+    public Response find(@PathParam("id") String id) {
+        
         Rental rental = super.find(id);
-
         if (rental != null) {
             return Response.ok().entity(rental).build();
         } else {
