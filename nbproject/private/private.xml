@@ -7,24 +7,22 @@
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/conf/MANIFEST.MF</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/model/entities/Console.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/web/WEB-INF/glassfish-resources.xml</file>
+            <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/model/entities/Address.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/conf/persistence.xml</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/service/GameFacadeREST.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/model/entities/Comment.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/service/ConsoleService.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/authn/RESTRequestFilter.java</file>
-            <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/service/CustomerService.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/utilities/db.sql</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/model/entities/Game.java</file>
-            <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/service/GameService.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/model/entities/Customer.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/service/AbstractFacade.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/web/install.jsp</file>
-            <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/service/CommentFacadeREST.java</file>
+            <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/service/GameTypesService.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/model/entities/GameType.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/service/RESTapp.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/authn/Credentials.java</file>
             <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/authn/Secured.java</file>
-            <file>file:/home/edgar/Escritorio/SOB/Homework1/src/java/validation/GetGameParams.java</file>
         </group>
     </open-files>
 </project-private>
