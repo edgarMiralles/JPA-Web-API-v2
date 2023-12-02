@@ -51,34 +51,30 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
                
         try {
             if (entity == null) {
-                // Si el JSON es nulo, retornar un error
                 return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
             }
-
-            List<Integer> gameIdList = Arrays.stream(entity.getGameId()).boxed().collect(Collectors.toList());
-
+            
+            for (Long id : entity.getGameId()) {
+                if (id <= 0) {
+                    return Response.status(Response.Status.BAD_REQUEST).entity("Game id must be an positive integer value").build();
+                }
+            }
+            
             List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
-                    .setParameter("ids", gameIdList)
+                    .setParameter("ids", entity.getGameId())
                     .getResultList();
             
-            for(Game game : games){
-                // Obtener el stock actual
-                int currentStock = game.getStock();
-
-                // Reducir el stock en 1
-                game.setStock(currentStock - 1);
-
-                // Verificar si el stock es cero
+            for(Game game : games){ 
+                game.setStock(game.getStock() - 1);
+                
                 if (game.getStock() <= 0) {
-                    // Stock agotado, lanzar respuesta erronea
                     return Response.status(Response.Status.BAD_REQUEST).entity("Stock of game '" + game.getName() + "' is depleted.").build();
                 }
             }
             
             entity.setGames(games);
             
-        } catch (NoResultException e) {
-            // Manejar el caso donde no se encuentra el juego
+        } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).entity("Game not found").build();
         }
 
@@ -87,27 +83,22 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
             tenant.getRentals().add(entity);
             entity.setTenant(tenant);
         } catch (Exception e) {
-            // Manejar el caso donde no se encuentra el cliente
             return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
         }
         
         try{                    
             String customerId = entity.getCustomerId();
 
-            // Concatenar el ID del cliente y el número de rentas
             String rentalId = String.valueOf(customerId)+"_"+String.valueOf(em.find(Customer.class, customerId).getRentals().size());
-            entity.setId(rentalId); // Establecer la ID generada
+            entity.setId(rentalId);
 
             RentalDTO rentalDTO = new RentalDTO();
-            rentalDTO.setId(entity.getId()); // ID de la renta
-            rentalDTO.setPrice(entity.getPrice()); // Precio
-            rentalDTO.setFinalDate(entity.getFinalDate()); // Fecha de retorno (puedes ajustarla según tus necesidades)
+            rentalDTO.setId(entity.getId()); 
+            rentalDTO.setPrice(entity.getPrice()); 
+            rentalDTO.setFinalDate(entity.getFinalDate()); 
             
-            // Recuperar el ID del cliente
-
-            // Construir la URI de la entidad creada
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            uriBuilder.path(entity.getId()); // Asumiendo que getId() devuelve la ID de la entidad
+            uriBuilder.path(entity.getId()); 
             
             super.create(entity);   
             

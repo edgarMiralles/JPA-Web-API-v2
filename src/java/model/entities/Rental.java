@@ -51,7 +51,7 @@ public class Rental implements Serializable {
     
     @Transient
     @NotNull
-    private int[] gameId;
+    private Collection<Long> gameId;
     @Transient
     @NotNull
     private String customerId;
@@ -77,14 +77,24 @@ public class Rental implements Serializable {
     public void setCustomerId(String id) {
         this.customerId = id;
     }
-    
-    public int[] getGameId() {
+
+    public Collection<Long> getGameId() {
         return gameId;
     }
 
-    public void setGameId(int[] id) {
-        this.gameId = id;
+    public void setGameId(Collection<Long> gameId) {
+        this.gameId = gameId;
     }
+
+    public Collection<Game> getRentedGames() {
+        return rentedGames;
+    }
+
+    public void setRentedGames(Collection<Game> rentedGames) {
+        this.rentedGames = rentedGames;
+    }
+    
+    
     
     public float getPrice() {
         return price;
