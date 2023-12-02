@@ -19,7 +19,6 @@ import jakarta.annotation.Priority;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.container.ResourceInfo;
 
-
 /**
  * @author Marc Sanchez
  */
@@ -60,7 +59,8 @@ public class RESTRequestFilter implements ContainerRequestFilter {
                         password = tokenizer.nextToken();
                     } catch(@SuppressWarnings("unused") Exception e){
                         requestCtx.abortWith(
-                                Response.status(Response.Status.BAD_REQUEST).build()
+                                Response.status(Response.Status.BAD_REQUEST)
+                                        .entity("Invalid authorization format").build()
                         );
                         return;
                     }
@@ -71,18 +71,21 @@ public class RESTRequestFilter implements ContainerRequestFilter {
                             .getSingleResult();
                         if(!c.getPassword().equals(password)) {
                             requestCtx.abortWith(
-                                Response.status(Response.Status.FORBIDDEN).build()
+                                Response.status(Response.Status.FORBIDDEN)
+                                        .entity("Invalid credentials").build()
                             );
                         }
                     } catch(@SuppressWarnings("unused") NoResultException e) {
                         requestCtx.abortWith(
-                            Response.status(Response.Status.UNAUTHORIZED).build()
+                            Response.status(Response.Status.UNAUTHORIZED)
+                                    .entity("credentials not found").build()
                         );
                     }                  
                 }  
                 else {
                    requestCtx.abortWith(
-                        Response.status(Response.Status.UNAUTHORIZED).build()
+                        Response.status(Response.Status.UNAUTHORIZED)
+                                .entity("Authorization header missing").build()
                     );
                 }
             }

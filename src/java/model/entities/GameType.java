@@ -29,7 +29,7 @@ public class GameType implements Serializable {
     private Long id;
     private String name;
     
-    @ManyToMany(mappedBy="types")
+    @ManyToMany(mappedBy="types", cascade = CascadeType.PERSIST)
     private Collection<Game> games;
 
     public GameType(){

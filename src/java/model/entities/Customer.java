@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,16 +12,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 
 /**
  *
- * @author edgar
+ * @author edgar y jordi
  */
 @NamedQueries({
     @NamedQuery(name = "Customer.findById",
@@ -33,27 +32,28 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
+    
     private String name;
     private String email;
     private String password;
     
-    
     @OneToMany(mappedBy="tenant")
+    @JsonbTransient
     private Collection<Rental> rentals;
     
     public Customer(){
         rentals = new ArrayList<Rental>();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-
+    
     public String getName() {
         return name;
     }

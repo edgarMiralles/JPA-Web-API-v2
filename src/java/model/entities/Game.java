@@ -22,12 +22,14 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
+
 /**
  *
- * @author edgar
+ * @author edgar y jordi
  */
 @Entity
 @NamedQueries({
+
     @NamedQuery(name = "Game.findIn",
                 query = "SELECT g FROM Game g WHERE g.id IN :ids"),
     @NamedQuery(name = "Game.findByDetails",
@@ -53,8 +55,9 @@ public class Game implements Serializable {
     @Embedded 
     private Address address;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Console console;
+    
     @Transient
     private Long consoleId; 
     
@@ -63,7 +66,11 @@ public class Game implements Serializable {
     private Collection<GameType> types;
     @Transient
     private Collection<Long> typeIds;
-
+    
+    @ManyToMany(mappedBy="rentedGames", cascade = CascadeType.PERSIST)
+    @JsonbTransient
+    private Collection<Rental> rentals;
+    
     public Game(){
         types = new ArrayList<>();
         typeIds = new ArrayList<>();
@@ -140,7 +147,15 @@ public class Game implements Serializable {
     public void setTypeIds(Collection<Long> typeIds) {
         this.typeIds = typeIds;
     }
+    
+    public Collection<Rental> getRentals() {
+        return rentals;
+    }
 
+    public void setRentals(Collection<Rental> rentals) {
+        this.rentals = rentals;
+    }
+    
     @Override
     public String toString() {
         return "Game[ id=" + id + " ]";

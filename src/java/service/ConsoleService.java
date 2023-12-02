@@ -1,11 +1,7 @@
 package service;
 
 import model.entities.Console;
-import model.entities.Game;
-import model.entities.GameType;
-import java.util.Collection;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 
 public class ConsoleService {
     protected EntityManager em;

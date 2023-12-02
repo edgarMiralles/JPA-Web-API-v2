@@ -4,31 +4,33 @@
  */
 package model.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
- * @author Usuario
+ * Author:  jordi
+ * Created: 01 dec 2023
  */
-public class RentalDTO {
-    private int id;
+
+public class RentalDTO implements Serializable{
+    private String id;
     private float price;
     private Date finalDate;
     
     public RentalDTO(){
     }
     
-    public RentalDTO(int id, float price, Date finalDate){
+    public RentalDTO(String id, float price, Date finalDate){
         this.id = id;
         this.price = price;
         this.finalDate = finalDate;
     }
     
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
