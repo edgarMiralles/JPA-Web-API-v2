@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="26100be9-0e8c-49ae-92d5-467c1222b9ec" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/authn/Credentials.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/authn/Credentials.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/authn/RESTRequestFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/authn/RESTRequestFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/authn/Secured.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/authn/Secured.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Address.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Comment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Comment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Console.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Console.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Customer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Customer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Game.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/GameType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/GameType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Rental.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Rental.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Topic.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/entities/Topic.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/AbstractFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/AbstractFacade.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/ConsoleService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/ConsoleService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/CustomerFacadeREST.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/CustomerFacadeREST.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/GameFacadeREST.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/GameFacadeREST.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/GameService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/GameService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/GameTypesService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/GameTypesService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/RESTapp.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/RESTapp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/RentalFacadeREST.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/service/RentalFacadeREST.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2YzgFmccoWsVuXEUkXj6HvfLuRf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Jordi",
+    "last_opened_file_path": "/home/edgar/Escritorio/SOB/Homework1",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="26100be9-0e8c-49ae-92d5-467c1222b9ec" name="Changes" comment="" />
+      <created>1701533722645</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1701533722645</updated>
+      <workItem from="1701533723512" duration="44000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
