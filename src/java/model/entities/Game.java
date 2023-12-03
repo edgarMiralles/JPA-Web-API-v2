@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -160,6 +161,5 @@ public class Game implements Serializable {
     @Override
     public String toString() {
         return "Game[ id=" + id + " ]";
-    }
-    
+    } 
 }
