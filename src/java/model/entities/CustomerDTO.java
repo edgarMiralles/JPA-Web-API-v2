@@ -5,46 +5,39 @@
 package model.entities;
 
 import jakarta.json.bind.annotation.JsonbTransient;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 /**
- *
- * @author edgar y jordi
+ * Author:  jordi
+ * Created: 01 dec 2023
  */
-@NamedQueries({
-    @NamedQuery(name = "Customer.findById",
-                query = "SELECT c FROM Customer c WHERE c.id = :id"),
-    @NamedQuery(name = "Customer.findCustomers",
-                query = "SELECT c FROM Customer c")    
-})
-@Entity
-public class Customer implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
+public class CustomerDTO implements Serializable{
+private static final long serialVersionUID = 1L;
+
     private String id;
-    
     private String name;
     private String email;
-    private String password;
-    
-    @OneToMany(mappedBy="tenant")
-    @JsonbTransient
     private Collection<Rental> rentals;
     
-    public Customer(){
+    public CustomerDTO(){
         rentals = new ArrayList<Rental>();
     }
-
+    
+    public CustomerDTO(Customer customer){
+        id = customer.getId();
+        name = customer.getName();
+        email = customer.getEmail();
+        rentals = customer.getRentals();
+    }
+    
     public String getId() {
         return id;
     }
@@ -67,14 +60,6 @@ public class Customer implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Collection<Rental> getRentals() {

@@ -5,7 +5,6 @@
 package validation;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.ws.rs.core.Response;
 import java.util.Collection;
 import model.entities.Console;

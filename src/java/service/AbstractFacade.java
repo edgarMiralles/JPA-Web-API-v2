@@ -7,7 +7,6 @@ package service;
 
 import java.util.List;
 import jakarta.persistence.EntityManager;
-import jakarta.ws.rs.core.Response;
 
 /**
  *
