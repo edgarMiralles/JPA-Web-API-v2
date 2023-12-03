@@ -5,25 +5,26 @@
 package validation;
 
 import jakarta.persistence.EntityManager;
-import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.QueryParam;
+import jakarta.persistence.PersistenceContext;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
-import java.util.List;
+import java.util.Collection;
 import model.entities.Console;
+import model.entities.Game;
 import model.entities.GameType;
 
 /**
  *
  * @author edgar
  */
-public class GetGameParams {
-    @QueryParam("console")
+public class PostGameParams {
     private Long consoleId;
-
-    @QueryParam("types")
-    private List<Long> typeIds;
-
+    private Collection<Long> typeIds;
+    
+    public PostGameParams(Game game){
+        this.consoleId = game.getConsoleId();
+        this.typeIds = game.getTypeIds();
+    }
+    
     public Long getConsoleId() {
         return consoleId;
     }
@@ -32,16 +33,15 @@ public class GetGameParams {
         this.consoleId = consoleId;
     }
 
-    public List<Long> getTypeIds() {
+    public Collection<Long> getTypeIds() {
         return typeIds;
     }
 
-    public void setTypeIds(List<Long> typeIds) {
+    public void setTypeIds(Collection<Long> typeIds) {
         this.typeIds = typeIds;
     }
     
-    public Response handleValidationErrors(EntityManager em) {
-
+    public Response handleValidationErrors(EntityManager em){
         if (!typeIds.isEmpty()) {
             int typeValidationResult = validateTypes(em);
             if (typeValidationResult == -1) {
@@ -51,6 +51,8 @@ public class GetGameParams {
             } else if (typeValidationResult == -2) {
                 return Response.status(Response.Status.NOT_FOUND).entity("GameType not Found").build();
             }
+        }else{
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing GameType Parameter").build();
         }
 
         if (consoleId != null) {
@@ -62,9 +64,11 @@ public class GetGameParams {
             } else if (consoleValidationResult == -2) {
                 return Response.status(Response.Status.NOT_FOUND).entity("Console not Found").build();
             }
+        }else{
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing Console Parameter").build();
         }
 
-        return null; // No se encontraron errores de validación
+        return null;
     }
 
     private int validateConsole(EntityManager em) {

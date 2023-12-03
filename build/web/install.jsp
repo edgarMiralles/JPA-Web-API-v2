@@ -26,11 +26,11 @@
              * 
              * If there is any problem, it will exit at the very first error.
              */
-            String dbname = "homework1";
-            String schema = "ROOT";
+            String dbname = "sob_grup_01";
+            String schema = "sob";
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             /* this will generate database if not exist */
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + dbname, "root", "root");
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + dbname, "sob", "sob");
             Statement stmt = con.createStatement();
             
             /* inserting data */

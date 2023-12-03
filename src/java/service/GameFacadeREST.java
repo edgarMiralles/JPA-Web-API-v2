@@ -26,6 +26,7 @@ import model.entities.Console;
 import model.entities.Game;
 import model.entities.GameType;
 import validation.GetGameParams;
+import validation.PostGameParams;
 
 @Stateless
 @Path("game")
@@ -49,30 +50,21 @@ public class GameFacadeREST extends AbstractFacade<Game> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response createGame(Game game, @Context UriInfo uriInfo) {
         if (gameExists(game.getName(), game.getConsoleId())) {
-            //409
             return Response.status(Response.Status.CONFLICT).entity("Game already exists").build();
         }
-
-        try{
-            Console console = this.em.find(Console.class, game.getConsoleId());
-            if (console == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Console not Found").build();
-            }
-            game.setConsole(console);
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Missing Console Parameter").build();
+        
+        PostGameParams gameValidator = new PostGameParams(game);
+        Response validationResponse = gameValidator.handleValidationErrors(em);
+        if (validationResponse != null) {
+            return validationResponse;
         }
+        
+        Console console = this.em.find(Console.class, game.getConsoleId());
+        game.setConsole(console);
 
-        try {
-            Query findIn = em.createNamedQuery("GameType.findIn");
-            List<GameType> typesList = findIn.setParameter("ids", game.getTypeIds()).getResultList();
-            if (typesList.size() != game.getTypeIds().size()) {
-                return Response.status(Response.Status.NOT_FOUND).entity("One Gametype not Found").build();
-            }
-            game.setTypes(typesList);
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Missing GameType Parameter").build();
-        }
+        Query findIn = em.createNamedQuery("GameType.findIn");
+        List<GameType> typesList = findIn.setParameter("ids", game.getTypeIds()).getResultList();
+        game.setTypes(typesList);
 
         super.create(game);
 
@@ -120,7 +112,7 @@ public class GameFacadeREST extends AbstractFacade<Game> {
         List<Long> typeIds = filterParams.getTypeIds();
         Long consoleId = filterParams.getConsoleId();
 
-        Response validationResponse = handleValidationErrors(filterParams);
+        Response validationResponse = filterParams.handleValidationErrors(em);
         if (validationResponse != null) {
             return validationResponse;
         }
@@ -147,35 +139,6 @@ public class GameFacadeREST extends AbstractFacade<Game> {
         }
 
         return Response.ok(games).build();
-    }
-
-    private Response handleValidationErrors(GetGameParams filterParams) {
-        List<Long> typeIds = filterParams.getTypeIds();
-        Long consoleId = filterParams.getConsoleId();
-
-        if (!typeIds.isEmpty()) {
-            int typeValidationResult = filterParams.validateTypes(em);
-            if (typeValidationResult == -1) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("The list of 'types' must contain only positive integers.")
-                        .build();
-            } else if (typeValidationResult == -2) {
-                return Response.status(Response.Status.NOT_FOUND).entity("GameType not Found").build();
-            }
-        }
-
-        if (consoleId != null) {
-            int consoleValidationResult = filterParams.validateConsole(em);
-            if (consoleValidationResult == -1) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("The 'console' parameter must be a positive integer.")
-                        .build();
-            } else if (consoleValidationResult == -2) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Console not Found").build();
-            }
-        }
-
-        return null; // No se encontraron errores de validación
     }
 
     @Override

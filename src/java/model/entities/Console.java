@@ -26,7 +26,7 @@ public class Console implements Serializable {
     private Long id;
     private String name;
     
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "console",cascade = CascadeType.PERSIST)
     private Collection<Game> games;
     
     public Console(){
