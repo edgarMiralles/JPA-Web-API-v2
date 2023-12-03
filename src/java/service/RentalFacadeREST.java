@@ -48,34 +48,23 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     @Secured
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response create(Rental entity, @Context UriInfo uriInfo) {
-               
-        try {
-            if (entity == null) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
-            }
-            
-            for (Long id : entity.getGameId()) {
-                if (id <= 0) {
-                    return Response.status(Response.Status.BAD_REQUEST).entity("Game id must be an positive integer value").build();
-                }
-            }
-            
-            List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
-                    .setParameter("ids", entity.getGameId())
-                    .getResultList();
-            
-            for(Game game : games){                
-                if (game.getStock() <= 0) {
-                    return Response.status(Response.Status.BAD_REQUEST).entity("Stock of game '" + game.getName() + "' is depleted.").build();
-                }
-                game.setStock(game.getStock() - 1);
-            }
-            
-            entity.setGames(games);
-            
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("No Games provided for the Rental").build();
+        
+        Response validateIdGames = validateIdGames(entity);
+        
+        if (validateIdGames != null) {
+            return validateIdGames;
         }
+        
+        List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
+                .setParameter("ids", entity.getGameId())
+                .getResultList();
+
+        for(Game game : games){                
+            game.setStock(game.getStock() - 1);
+        }
+
+        entity.setGames(games);
+
 
         try {        
             Customer tenant = em.find(Customer.class,entity.getCustomerId());
@@ -112,6 +101,43 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         }     
     }
 
+    private Response validateIdGames(Rental entity) {
+        try{
+            if (entity == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
+            }
+
+            for (Long id : entity.getGameId()) {
+                if (id <= 0) {
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity("Game id must be a positive integer value").build();
+                }if(id == null){
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity("Game id must be exists").build();
+                }
+            }           
+        
+             List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
+                .setParameter("ids", entity.getGameId())
+                .getResultList();
+             
+            for(Game game : games){                
+                if(game == null){
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity("Game must be exists").build();
+                }if (game.getStock() <= 0) {
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity("Stock of game '" + game.getName() + "' is depleted.").build();
+                }
+            }
+            
+        }catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("No valid games provided for the Rental").build(); 
+        }
+
+        return null; // No validation errors
+    }
+    
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
