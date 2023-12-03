@@ -69,7 +69,7 @@ public class GameFacadeREST extends AbstractFacade<Game> {
         super.create(game);
 
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-        uriBuilder.path(Integer.toString(game.getId()));
+        uriBuilder.path(Long.toString(game.getId()));
 
         return Response.created(uriBuilder.build()).entity(super.find(game.getId())).build();
     }

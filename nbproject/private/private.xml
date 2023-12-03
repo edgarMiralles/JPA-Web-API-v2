@@ -3,10 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/validation/PostRentalParams.java</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/utilities/db.sql</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/validation/GetGameParams.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/web/index.html</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/service/RentalFacadeREST.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/model/entities/Rental.java</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/service/CustomerFacadeREST.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/model/entities/Customer.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/validation/PostGameParams.java</file>
             <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/service/GameFacadeREST.java</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/web/install.jsp</file>
+            <file>file:/C:/Users/Usuario/Documents/GitHub/Homework1/src/java/model/entities/Game.java</file>
         </group>
     </open-files>
 </project-private>

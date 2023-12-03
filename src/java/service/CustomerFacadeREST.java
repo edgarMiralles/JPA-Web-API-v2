@@ -52,7 +52,6 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Transactional
     public Response edit(@PathParam("id") String id, Customer entity) {
-        try {
             if (entity == null) {
                 // Si el JSON es nulo, retornar un error
                 return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
@@ -89,10 +88,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
                 // Manejar el caso donde no se encuentra el cliente
                 return Response.status(Response.Status.NOT_FOUND).entity("There is no customer with id: " + id).build();
             }
-        } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("There is no customer with id: " + id).build();
         }
-    }
 
     @DELETE
     @Path("{id}")

@@ -47,7 +47,7 @@ public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
     private String name;
     private int stock;
     private String description;
@@ -78,7 +78,7 @@ public class Game implements Serializable {
         typeIds = new ArrayList<>();
     }
     
-    public int getId() {
+    public long getId() {
         return id;
     }
 
