@@ -56,6 +56,7 @@ public class Game implements Serializable {
     private Address address;
     
     @ManyToOne(cascade = CascadeType.PERSIST)
+    @JsonbTransient
     private Console console;
     
     @Transient

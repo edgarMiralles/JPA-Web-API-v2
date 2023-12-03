@@ -64,26 +64,28 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
                     .setParameter("ids", entity.getGameId())
                     .getResultList();
             
-            for(Game game : games){ 
-                game.setStock(game.getStock() - 1);
-                
+            for(Game game : games){                
                 if (game.getStock() <= 0) {
                     return Response.status(Response.Status.BAD_REQUEST).entity("Stock of game '" + game.getName() + "' is depleted.").build();
                 }
+                game.setStock(game.getStock() - 1);
             }
             
             entity.setGames(games);
             
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Game not found").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("No Games provided for the Rental").build();
         }
 
         try {        
             Customer tenant = em.find(Customer.class,entity.getCustomerId());
+            if (tenant == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Provided Customer doesn't exist").build();
+            }
             tenant.getRentals().add(entity);
             entity.setTenant(tenant);
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Customer not found").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("No Customer provided for the Rental").build();
         }
         
         try{                    
