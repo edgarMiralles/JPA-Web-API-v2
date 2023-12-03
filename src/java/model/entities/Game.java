@@ -15,6 +15,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
@@ -34,15 +35,15 @@ import java.util.List;
     @NamedQuery(name = "Game.findIn",
                 query = "SELECT g FROM Game g WHERE g.id IN :ids"),
     @NamedQuery(name = "Game.findByDetails",
-                query = "SELECT g FROM Game g WHERE g.name = :name AND g.console.id = :consoleId"),
+                query = "SELECT g FROM Game g WHERE g.name = :name AND g.console.id = :consoleId ORDER BY g.name ASC"),
     @NamedQuery(name= "Game.findByTypesAndConsole",
-                query = "SELECT DISTINCT g FROM Game g WHERE g.console.id = :consoleId AND g.types IN :typeIds"),
+                query = "SELECT DISTINCT g FROM Game g WHERE g.console.id = :consoleId AND g.types IN :typeIds ORDER BY g.name ASC"),
     @NamedQuery(name= "Game.findByConsole",
-                query = "SELECT g FROM Game g WHERE g.console.id = :consoleId"),
+                query = "SELECT g FROM Game g WHERE g.console.id = :consoleId ORDER BY g.name ASC"),
     @NamedQuery(name= "Game.findByTypes",
-                query = "SELECT DISTINCT g FROM Game g WHERE g.types IN :typeIds"),
+                query = "SELECT DISTINCT g FROM Game g WHERE g.types IN :typeIds ORDER BY g.name ASC"),
     @NamedQuery(name= "Game.findAll",
-                query = "SELECT g FROM Game g")
+                query = "SELECT g FROM Game g ORDER BY g.name ASC")
 })
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -58,6 +59,7 @@ public class Game implements Serializable {
     
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonbTransient
+    @JoinColumn(name = "console_id")
     private Console console;
     
     @Transient
