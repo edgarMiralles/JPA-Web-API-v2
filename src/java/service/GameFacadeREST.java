@@ -112,7 +112,7 @@ public class GameFacadeREST extends AbstractFacade<Game> {
         List<Long> typeIds = filterParams.getTypeIds();
         Long consoleId = filterParams.getConsoleId();
 
-        Response validationResponse = handleValidationErrors(filterParams);
+        Response validationResponse = filterParams.handleValidationErrors(em);
         if (validationResponse != null) {
             return validationResponse;
         }
@@ -139,35 +139,6 @@ public class GameFacadeREST extends AbstractFacade<Game> {
         }
 
         return Response.ok(games).build();
-    }
-
-    private Response handleValidationErrors(GetGameParams filterParams) {
-        List<Long> typeIds = filterParams.getTypeIds();
-        Long consoleId = filterParams.getConsoleId();
-
-        if (!typeIds.isEmpty()) {
-            int typeValidationResult = filterParams.validateTypes(em);
-            if (typeValidationResult == -1) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("The list of 'types' must contain only positive integers.")
-                        .build();
-            } else if (typeValidationResult == -2) {
-                return Response.status(Response.Status.NOT_FOUND).entity("GameType not Found").build();
-            }
-        }
-
-        if (consoleId != null) {
-            int consoleValidationResult = filterParams.validateConsole(em);
-            if (consoleValidationResult == -1) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("The 'console' parameter must be a positive integer.")
-                        .build();
-            } else if (consoleValidationResult == -2) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Console not Found").build();
-            }
-        }
-
-        return null; // No se encontraron errores de validación
     }
 
     @Override

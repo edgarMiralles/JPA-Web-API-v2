@@ -39,8 +39,35 @@ public class GetGameParams {
     public void setTypeIds(List<Long> typeIds) {
         this.typeIds = typeIds;
     }
+    
+    public Response handleValidationErrors(EntityManager em) {
 
-    public int validateConsole(EntityManager em) {
+        if (!typeIds.isEmpty()) {
+            int typeValidationResult = validateTypes(em);
+            if (typeValidationResult == -1) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("The list of 'types' must contain only positive integers.")
+                        .build();
+            } else if (typeValidationResult == -2) {
+                return Response.status(Response.Status.NOT_FOUND).entity("GameType not Found").build();
+            }
+        }
+
+        if (consoleId != null) {
+            int consoleValidationResult = validateConsole(em);
+            if (consoleValidationResult == -1) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("The 'console' parameter must be a positive integer.")
+                        .build();
+            } else if (consoleValidationResult == -2) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Console not Found").build();
+            }
+        }
+
+        return null; // No se encontraron errores de validación
+    }
+
+    private int validateConsole(EntityManager em) {
         if (consoleId <= 0) {
             return -1;
         }
@@ -49,7 +76,7 @@ public class GetGameParams {
         }
         return 0;
     }
-    public int validateTypes(EntityManager em) {
+    private int validateTypes(EntityManager em) {
         for (Long typeId : typeIds) {
             if (typeId <= 0) {
                 return -1;
