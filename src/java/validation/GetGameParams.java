@@ -5,10 +5,8 @@
 package validation;
 
 import jakarta.persistence.EntityManager;
-import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 import java.util.List;
 import model.entities.Console;
 import model.entities.GameType;

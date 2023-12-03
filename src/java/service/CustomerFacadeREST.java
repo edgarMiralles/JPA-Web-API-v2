@@ -19,9 +19,8 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Collection;
 import model.entities.Customer;
-import model.entities.Rental;
+import model.entities.CustomerDTO;
 
 /**
  * Author:  jordi
@@ -52,7 +51,6 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Transactional
     public Response edit(@PathParam("id") String id, Customer entity) {
-        try {
             if (entity == null) {
                 // Si el JSON es nulo, retornar un error
                 return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
@@ -89,10 +87,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
                 // Manejar el caso donde no se encuentra el cliente
                 return Response.status(Response.Status.NOT_FOUND).entity("There is no customer with id: " + id).build();
             }
-        } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).entity("There is no customer with id: " + id).build();
         }
-    }
 
     @DELETE
     @Path("{id}")
@@ -108,11 +103,12 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
             Query query = em.createNamedQuery("Customer.findCustomers", Customer.class);
             List<Customer> customers = query.getResultList();
             
+            List<CustomerDTO> customerList = new ArrayList<>();
             for (Customer customer : customers) {
-                customer.setPassword(null);
+                customerList.add(new CustomerDTO(customer));
             }
 
-            return Response.ok().entity(customers).build();
+            return Response.ok().entity(customerList).build();
         } catch (NoResultException e) {
             // Manejar el caso donde no se encuentra los clientes
             return Response.status(Response.Status.NOT_FOUND).entity("Theres is not customers").build();
@@ -129,8 +125,8 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
             findCustomerId.setParameter("id",id);
         
             Customer customerFound = (Customer) findCustomerId.getSingleResult();
-            customerFound.setPassword(null);
-            return Response.ok().entity(customerFound).build();
+            CustomerDTO customer = new CustomerDTO(customerFound);
+            return Response.ok().entity(customer).build();
         } catch (NoResultException e) {
             // Manejar el caso donde no se encuentra el cliente
             return Response.status(Response.Status.NOT_FOUND).entity("Theres is not customers with id: "+id).build();

@@ -18,17 +18,11 @@ import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.util.List;
 import authn.Secured;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.stream.Collectors;
 import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
 import model.entities.RentalDTO;
+import validation.PostRentalParams;
 /**
  * Author:  jordi
  * Created: 01 dec 2023
@@ -47,71 +41,49 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     @POST
     @Secured
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response create(Rental entity, @Context UriInfo uriInfo) {
-               
-        try {
-            if (entity == null) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
-            }
-            
-            for (Long id : entity.getGameId()) {
-                if (id <= 0) {
-                    return Response.status(Response.Status.BAD_REQUEST).entity("Game id must be an positive integer value").build();
-                }
-            }
-            
-            List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
-                    .setParameter("ids", entity.getGameId())
-                    .getResultList();
-            
-            for(Game game : games){                
-                if (game.getStock() <= 0) {
-                    return Response.status(Response.Status.BAD_REQUEST).entity("Stock of game '" + game.getName() + "' is depleted.").build();
-                }
-                game.setStock(game.getStock() - 1);
-            }
-            
-            entity.setGames(games);
-            
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("No Games provided for the Rental").build();
-        }
-
-        try {        
-            Customer tenant = em.find(Customer.class,entity.getCustomerId());
-            if (tenant == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Provided Customer doesn't exist").build();
-            }
-            tenant.getRentals().add(entity);
-            entity.setTenant(tenant);
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("No Customer provided for the Rental").build();
+    public Response create(Rental rental, @Context UriInfo uriInfo) {
+ 
+        if (rental == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
         }
         
-        try{                    
-            String customerId = entity.getCustomerId();
+        PostRentalParams rentalValidator = new PostRentalParams(rental);
+        Response validationResponse = rentalValidator.handleValidationErrors(em);
+        if (validationResponse != null) {
+            return validationResponse;
+        }
 
-            String rentalId = String.valueOf(customerId)+"_"+String.valueOf(em.find(Customer.class, customerId).getRentals().size());
-            entity.setId(rentalId);
+        List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
+                .setParameter("ids", rental.getGameId())
+                .getResultList();
 
-            RentalDTO rentalDTO = new RentalDTO();
-            rentalDTO.setId(entity.getId()); 
-            rentalDTO.setPrice(entity.getPrice()); 
-            rentalDTO.setFinalDate(entity.getFinalDate()); 
-            
-            UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-            uriBuilder.path(entity.getId()); 
-            
-            super.create(entity);   
-            
-            return Response.created(uriBuilder.build()).entity(rentalDTO).build();
-        }catch(NullPointerException e){
-            return Response.status(Response.Status.BAD_REQUEST).entity("Missing required attribute").build();
-        }catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Missing required attribute").build();
-        }     
+        for(Game game : games){                
+            game.setStock(game.getStock() - 1);
+        }
+        rental.setGames(games);
+
+        Customer tenant = em.find(Customer.class,rental.getCustomerId());
+        tenant.getRentals().add(rental);
+        rental.setTenant(tenant);
+        
+        
+        String customerId = rental.getCustomerId();
+
+        String rentalId = String.valueOf(customerId)+"_"+String.valueOf(em.find(Customer.class, customerId).getRentals().size());
+        rental.setId(rentalId);
+
+        RentalDTO rentalDTO = new RentalDTO();
+        rentalDTO.setId(rental.getId()); 
+        rentalDTO.setPrice(rental.getPrice()); 
+        rentalDTO.setFinalDate(rental.getFinalDate()); 
+
+        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
+        uriBuilder.path(rental.getId()); 
+
+        super.create(rental);   
+        return Response.created(uriBuilder.build()).entity(rentalDTO).build();
     }
-
+    
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

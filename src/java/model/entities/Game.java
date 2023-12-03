@@ -21,8 +21,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Transient;
-import jakarta.validation.constraints.NotNull;
-import java.util.List;
 
 
 /**
@@ -50,6 +48,7 @@ public class Game implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
     private int stock;
     private String description;
