@@ -50,7 +50,6 @@ public class GameFacadeREST extends AbstractFacade<Game> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response createGame(Game game, @Context UriInfo uriInfo) {
         if (gameExists(game.getName(), game.getConsoleId())) {
-            //409
             return Response.status(Response.Status.CONFLICT).entity("Game already exists").build();
         }
         
