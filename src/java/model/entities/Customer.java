@@ -23,6 +23,8 @@ import jakarta.persistence.OneToMany;
 @NamedQueries({
     @NamedQuery(name = "Customer.findById",
                 query = "SELECT c FROM Customer c WHERE c.id = :id"),
+    @NamedQuery(name = "Customer.findByEmail",
+                query = "SELECT c FROM Customer c WHERE c.email = :email"),
     @NamedQuery(name = "Customer.findCustomers",
                 query = "SELECT c FROM Customer c")    
 })
@@ -31,9 +33,9 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
     
-    private String name;
+    private String username;
     private String email;
     private String password;
     
@@ -45,21 +47,22 @@ public class Customer implements Serializable {
         rentals = new ArrayList<Rental>();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    
-    public String getName() {
-        return name;
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
+    
 
     public String getEmail() {
         return email;
@@ -87,7 +90,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer[ name=" + name + " ]";
+        return "Customer[ name=" + username + " ]";
     }
     
 }
