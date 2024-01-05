@@ -23,6 +23,7 @@ import jakarta.ws.rs.core.UriInfo;
 import model.entities.Console;
 import model.entities.Game;
 import model.entities.GameType;
+import model.entities.Rental;
 import validation.GetGameParams;
 import validation.PostGameParams;
 
@@ -139,6 +140,14 @@ public class GameFacadeREST extends AbstractFacade<Game> {
         return Response.ok(games).build();
     }
 
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response findById(@PathParam("id") Long id) {
+            Game game = super.find(id);
+            return Response.ok().entity(game).build();
+    }
+    
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Game> findAll() {
