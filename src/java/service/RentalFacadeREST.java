@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.util.List;
 import authn.Secured;
+import java.util.ArrayList;
 import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
@@ -57,11 +58,15 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
                 .setParameter("ids", rental.getGameId())
                 .getResultList();
 
+        float priceTotal = 0;
         for(Game game : games){                
             game.setStock(game.getStock() - 1);
+            priceTotal += game.getPrice();
         }
+        
         rental.setGames(games);
-
+        rental.setPrice(priceTotal);
+        
         Customer tenant = em.find(Customer.class,rental.getCustomerId());
         tenant.getRentals().add(rental);
         rental.setTenant(tenant);
@@ -74,7 +79,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
 
         RentalDTO rentalDTO = new RentalDTO();
         rentalDTO.setId(rental.getId()); 
-        rentalDTO.setPrice(rental.getPrice()); 
+        rentalDTO.setPrice(priceTotal); 
         rentalDTO.setFinalDate(rental.getFinalDate()); 
 
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
@@ -104,8 +109,14 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     public Response find(@PathParam("id") String id) {
         
         Rental rental = super.find(id);
+        
+        RentalDTO rentalDTO = new RentalDTO();
+        rentalDTO.setId(rental.getId()); 
+        rentalDTO.setPrice(rental.getPrice()); 
+        rentalDTO.setFinalDate(rental.getFinalDate()); 
+
         if (rental != null) {
-            return Response.ok().entity(rental).build();
+            return Response.ok().entity(rentalDTO).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Rental not found for id: " + id).build();
         }
@@ -116,7 +127,16 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Rental> findAll() {
-        return super.findAll();
+                
+        ArrayList rentalsDTO = new ArrayList();
+        for(Rental rental : super.findAll()){
+            RentalDTO rentalDTO = new RentalDTO();
+            rentalDTO.setId(rental.getId()); 
+            rentalDTO.setPrice(rental.getPrice()); 
+            rentalDTO.setFinalDate(rental.getFinalDate()); 
+            rentalsDTO.add(rentalDTO);
+        }
+        return rentalsDTO;
     }
 
     @GET

@@ -1,10 +1,10 @@
 INSERT INTO CREDENTIALS (ID, USERNAME, PASSWORD) VALUES (1, 'sob', 'sob')
 
-INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, CITY, STATE, STREET, ZIP_CODE) VALUES (2, 'Super Mario Odyssey', 20, 'An amazing adventure game', 'Cityville', 'Stateville', '123 Main St', '12345')
-INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, CITY, STATE, STREET, ZIP_CODE) VALUES (3, 'Call of Duty: Modern Warfare', 15, 'Intense first-person shooter', 'Cityville', 'Stateville', '123 Main St', '12345')
-INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, CITY, STATE, STREET, ZIP_CODE) VALUES (4, 'The Witcher 3: Wild Hunt', 10, 'Epic open-world RPG', 'Townsville', 'Provinceville', '456 Oak St', '67890')
-INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, CITY, STATE, STREET, ZIP_CODE) VALUES (5, 'FIFA 22', 30, 'Football simulation game', 'Townsville', 'Provinceville', '456 Oak St', '67890')
-INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, CITY, STATE, STREET, ZIP_CODE) VALUES (6, 'FIFA 23', 0, 'Football simulation game', 'Cityville', 'Stateville', '123 Main St', '12345')
+INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, PRICE, CITY, STATE, STREET, ZIP_CODE) VALUES (2, 'Super Mario Odyssey', 20, 'An amazing adventure game', 10.0, 'Cityville', 'Stateville', '123 Main St', '12345')
+INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, PRICE, CITY, STATE, STREET, ZIP_CODE) VALUES (3, 'Call of Duty: Modern Warfare', 15, 'Intense first-person shooter', 10.0, 'Cityville', 'Stateville', '123 Main St', '12345')
+INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, PRICE, CITY, STATE, STREET, ZIP_CODE) VALUES (4, 'The Witcher 3: Wild Hunt', 10, 'Epic open-world RPG', 10.0, 'Townsville', 'Provinceville', '456 Oak St', '67890')
+INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, PRICE, CITY, STATE, STREET, ZIP_CODE) VALUES (5, 'FIFA 22', 30, 'Football simulation game', 10.0, 'Townsville', 'Provinceville', '456 Oak St', '67890')
+INSERT INTO GAME (ID, NAME, STOCK, DESCRIPTION, PRICE, CITY, STATE, STREET, ZIP_CODE) VALUES (6, 'FIFA 23', 0, 'Football simulation game', 10.0, 'Cityville', 'Stateville', '123 Main St', '12345')
 
 INSERT INTO CONSOLE (ID, NAME) VALUES (1, 'PlayStation 5')
 INSERT INTO CONSOLE (ID, NAME) VALUES (2, 'Xbox Series X')

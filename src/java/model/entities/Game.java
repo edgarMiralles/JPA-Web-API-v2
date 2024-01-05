@@ -52,6 +52,7 @@ public class Game implements Serializable {
     private String name;
     private int stock;
     private String description;
+    private float price;
     
     @Embedded 
     private Address address;
@@ -77,6 +78,14 @@ public class Game implements Serializable {
     public Game(){
         types = new ArrayList<>();
         typeIds = new ArrayList<>();
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
     
     public Long getId() {
