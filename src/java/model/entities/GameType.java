@@ -35,7 +35,7 @@ public class GameType implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    
+
     @ManyToMany(mappedBy="types", cascade = CascadeType.PERSIST)
     @JsonbTransient
     private Collection<Game> games;

@@ -52,6 +52,8 @@ public class Game implements Serializable {
 
     private String name;
     private int stock;
+    
+    @Lob
     private String description;
     private float price;
     
