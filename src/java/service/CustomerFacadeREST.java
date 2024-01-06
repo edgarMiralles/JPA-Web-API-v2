@@ -42,6 +42,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Customer entity) {
+        System.out.println("Gordito: "+entity.getPassword());
         super.create(entity);
     }
 
@@ -63,8 +64,8 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
                 Customer existingCustomer = (Customer) findCustomerId.getSingleResult();
 
                 // Actualizar solo los atributos no nulos
-                if (entity.getName() != null) {
-                    existingCustomer.setName(entity.getName());
+                if (entity.getUsername()!= null) {
+                    existingCustomer.setUsername(entity.getUsername());
                 }
                 
                 if (entity.getEmail() != null) {
@@ -117,19 +118,33 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     }
     
     @GET
-    @Path("{id}")
+    @Path("id/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response find(@PathParam("id") String id) {
+    public Response find(@PathParam("id") Long id) {
         try {
-            Query findCustomerId = em.createNamedQuery("Customer.findById"); 
-            findCustomerId.setParameter("id",id);
-        
-            Customer customerFound = (Customer) findCustomerId.getSingleResult();
+            Customer customerFound = em.find(Customer.class, id);
             CustomerDTO customer = new CustomerDTO(customerFound);
             return Response.ok().entity(customer).build();
         } catch (NoResultException e) {
             // Manejar el caso donde no se encuentra el cliente
             return Response.status(Response.Status.NOT_FOUND).entity("Theres is not customers with id: "+id).build();
+        }  
+    }
+    
+    @GET
+    @Path("email/{email}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response findByEmail(@PathParam("email") String email) {
+        try {
+            Query findCustomerByEmail = em.createNamedQuery("Customer.findByEmail"); 
+            findCustomerByEmail.setParameter("email",email);
+            Customer customerFound = (Customer) findCustomerByEmail.getSingleResult();
+            
+            CustomerDTO customer = new CustomerDTO(customerFound);
+            return Response.ok().entity(customer).build();
+        } catch (NoResultException e) {
+            // Manejar el caso donde no se encuentra el cliente
+            return Response.status(Response.Status.NOT_FOUND).entity("Theres is not customers with id: "+email).build();
         }  
     }
 

@@ -22,8 +22,8 @@ import java.util.Date;
 public class CustomerDTO implements Serializable{
 private static final long serialVersionUID = 1L;
 
-    private String id;
-    private String name;
+    private Long id;
+    private String username;
     private String email;
     private Collection<Rental> rentals;
     
@@ -33,25 +33,25 @@ private static final long serialVersionUID = 1L;
     
     public CustomerDTO(Customer customer){
         id = customer.getId();
-        name = customer.getName();
+        username = customer.getUsername();
         email = customer.getEmail();
         rentals = customer.getRentals();
     }
     
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    
-    public String getName() {
-        return name;
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -72,7 +72,7 @@ private static final long serialVersionUID = 1L;
 
     @Override
     public String toString() {
-        return "Customer[ name=" + name + " ]";
+        return "Customer[ name=" + username + " ]";
     }
     
 }

@@ -89,11 +89,15 @@ public class ConsoleFacadeREST extends AbstractFacade<Console> {
             Console console = super.find(id);
             return Response.ok().entity(console).build();
     }
-    
-    @Override
+
+    @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Console> findAll() {
-        return super.findAll();
+    public Response getAll() {
+        Query findAll = em.createNamedQuery("Console.findAll", Console.class);
+
+        List<Console> consoles = findAll.getResultList();
+
+        return Response.ok().entity(consoles).build();  
     }
 
     @GET
@@ -114,5 +118,5 @@ public class ConsoleFacadeREST extends AbstractFacade<Console> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
 }
+

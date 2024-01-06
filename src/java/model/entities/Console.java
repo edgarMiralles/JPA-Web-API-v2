@@ -23,11 +23,12 @@ import jakarta.persistence.OneToMany;
 @NamedQueries({
     @NamedQuery(name = "Console.findById",
                 query = "SELECT c FROM Console c WHERE c.id = :id"),
-    @NamedQuery(name = "Console.findConsoles",
+    @NamedQuery(name = "Console.findAll",
                 query = "SELECT c FROM Console c"),
     @NamedQuery(name = "Console.findIn",
                 query = "SELECT c FROM Console c WHERE c.id IN :ids")
 })
+
 
 @Entity
 public class Console implements Serializable {
