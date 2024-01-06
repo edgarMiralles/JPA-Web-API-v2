@@ -22,13 +22,13 @@ import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 import model.entities.Console;
 import model.entities.Game;
 import model.entities.GameType;
-import model.entities.Rental;
 import validation.GetGameParams;
 import validation.PostGameParams;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 @Stateless
 @Path("game")
@@ -178,7 +178,7 @@ public class GameFacadeREST extends AbstractFacade<Game> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;

@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
@@ -75,6 +76,17 @@ public class Game implements Serializable {
     @ManyToMany(mappedBy="rentedGames", cascade = CascadeType.PERSIST)
     @JsonbTransient
     private Collection<Rental> rentals;
+    
+    @JoinColumn(name = "IMAGE")
+    private long image;
+
+    public long getImage() {
+        return image;
+    }
+
+    public void setImage(long image) {
+        this.image = image; 
+    }
     
     public Game(){
         types = new ArrayList<>();

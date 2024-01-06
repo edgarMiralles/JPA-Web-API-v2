@@ -23,7 +23,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
-import java.util.Collection;
 import java.util.List;
 import model.entities.GameType;
 
@@ -135,6 +134,7 @@ public class GameTypeFacadeREST extends AbstractFacade<GameType> {
         return String.valueOf(super.count());
     }
 
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
