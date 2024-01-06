@@ -4,6 +4,7 @@
  */
 package model.entities;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 
 /**
@@ -20,8 +22,13 @@ import jakarta.persistence.NamedQuery;
  * @author edgar
  */
 @Entity
-@NamedQuery(name = "GameType.findIn",
-        query = "SELECT e FROM GameType e WHERE e.id IN :ids")
+@NamedQueries({
+    @NamedQuery(name = "GameType.findIn",
+        query = "SELECT g FROM GameType g WHERE g.id IN :ids"),
+    @NamedQuery(name = "GameType.findById",
+        query = "SELECT g FROM GameType g WHERE g.id = :id")
+})
+
 public class GameType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -30,6 +37,7 @@ public class GameType implements Serializable {
     private String name;
     
     @ManyToMany(mappedBy="types", cascade = CascadeType.PERSIST)
+    @JsonbTransient
     private Collection<Game> games;
 
     public GameType(){
@@ -59,9 +67,11 @@ public class GameType implements Serializable {
     public void setGames(Collection<Game> games) {
         this.games = games;
     }
+
     @Override
     public String toString() {
-        return "Game[ id=" + id + " ]";
+        return "GameType{" + "id=" + id + ", name=" + name + '}';
     }
+ 
     
 }

@@ -12,12 +12,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 
 /**
  *
  * @author edgar
  */
+@NamedQueries({
+    @NamedQuery(name = "Console.findById",
+                query = "SELECT c FROM Console c WHERE c.id = :id"),
+    @NamedQuery(name = "Console.findConsoles",
+                query = "SELECT c FROM Console c"),
+    @NamedQuery(name = "Console.findIn",
+                query = "SELECT c FROM Console c WHERE c.id IN :ids")
+})
+
 @Entity
 public class Console implements Serializable {
     private static final long serialVersionUID = 1L;

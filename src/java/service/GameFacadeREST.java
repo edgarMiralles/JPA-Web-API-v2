@@ -20,6 +20,9 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import model.entities.Console;
 import model.entities.Game;
 import model.entities.GameType;
@@ -145,6 +148,14 @@ public class GameFacadeREST extends AbstractFacade<Game> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response findById(@PathParam("id") Long id) {
             Game game = super.find(id);
+            
+            game.setConsoleId(game.getConsole().getId());        
+            Collection<Long> typeIds = new ArrayList<>();
+            for (GameType gameType : game.getTypes()) {
+                typeIds.add(gameType.getId());
+            }
+            game.setTypeIds(typeIds);
+    
             return Response.ok().entity(game).build();
     }
     

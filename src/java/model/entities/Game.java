@@ -68,6 +68,7 @@ public class Game implements Serializable {
     @ManyToMany
     @JsonbTransient
     private Collection<GameType> types;
+    
     @Transient
     private Collection<Long> typeIds;
     
