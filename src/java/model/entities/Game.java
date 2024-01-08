@@ -6,6 +6,7 @@ package model.entities;
 
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,13 +35,19 @@ import jakarta.persistence.Transient;
     @NamedQuery(name = "Game.findIn",
                 query = "SELECT g FROM Game g WHERE g.id IN :ids"),
     @NamedQuery(name = "Game.findByDetails",
-                query = "SELECT g FROM Game g WHERE g.name = :name AND g.console.id = :consoleId ORDER BY g.name ASC"),
+                query = "SELECT DISTINCT g FROM Game g WHERE g.name = :name AND g.console.id = :consoleId ORDER BY g.name ASC"),
     @NamedQuery(name= "Game.findByTypesAndConsole",
                 query = "SELECT DISTINCT g FROM Game g WHERE g.console.id = :consoleId AND g.types IN :typeIds ORDER BY g.name ASC"),
     @NamedQuery(name= "Game.findByConsole",
                 query = "SELECT g FROM Game g WHERE g.console.id = :consoleId ORDER BY g.name ASC"),
     @NamedQuery(name= "Game.findByTypes",
-                query = "SELECT DISTINCT g FROM Game g WHERE g.types IN :typeIds ORDER BY g.name ASC"),
+                query = "SELECT g FROM Game g WHERE g.types IN :typeIds ORDER BY g.name ASC"),
+    @NamedQuery(name= "Game.countByTypesAndConsole",
+                query = "SELECT COUNT(DISTINCT g) FROM Game g WHERE g.console.id = :consoleId AND g.types IN :typeIds"),
+    @NamedQuery(name= "Game.countByConsole",
+                query = "SELECT COUNT(DISTINCT g) FROM Game g WHERE g.console.id = :consoleId"),
+    @NamedQuery(name= "Game.countByTypes",
+            query = "SELECT COUNT(DISTINCT g) FROM Game g WHERE g.types IN :typeIds"),
     @NamedQuery(name= "Game.findAll",
                 query = "SELECT g FROM Game g ORDER BY g.name ASC")
 })
@@ -53,7 +60,7 @@ public class Game implements Serializable {
     private String name;
     private int stock;
     
-    @Lob
+    @Column(length = 1000)
     private String description;
     private float price;
     

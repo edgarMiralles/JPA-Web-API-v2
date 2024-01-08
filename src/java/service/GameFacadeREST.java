@@ -124,8 +124,6 @@ public class GameFacadeREST extends AbstractFacade<Game> {
             return validationResponse;
         }
         
-        System.out.println("pipipi" + typeIds);
-
         TypedQuery<Game> query;
         int offset = (page - 1) * pageSize;
 
@@ -183,8 +181,36 @@ public class GameFacadeREST extends AbstractFacade<Game> {
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
+    public String countByDetails(
+         @BeanParam GetGameParams filterParams){
+
+        List<Long> typeIds = filterParams.getTypeIds();
+        Long consoleId = filterParams.getConsoleId();
+
+        Response validationResponse = filterParams.handleValidationErrors(em);
+        if (validationResponse != null) {
+            return "0";
+        }
+        System.out.println("Aqui si amor");
+        Query query;
+
+        if (!typeIds.isEmpty() && consoleId != null) {
+            query = em.createNamedQuery("Game.countByTypesAndConsole")
+                    .setParameter("typeIds", typeIds)
+                    .setParameter("consoleId", consoleId);
+        } else if (!typeIds.isEmpty()) {
+            query = em.createNamedQuery("Game.countByTypes")
+                    .setParameter("typeIds", typeIds);
+        } else if (consoleId != null) {
+            query = em.createNamedQuery("Game.countByConsole")
+                    .setParameter("consoleId", consoleId);
+        } else {
+            return String.valueOf(super.count());
+        }
+
+        System.out.println(query.getFirstResult());
+        
+        return String.valueOf((long)query.getSingleResult());
     }
     
     @Override
