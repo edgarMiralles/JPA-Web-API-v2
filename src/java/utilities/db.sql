@@ -37,10 +37,10 @@ VALUES (9, 'FIFA 29', 6, 0, 'Take your football journey to new heights with FIFA
 INSERT INTO GAME (ID, NAME, IMAGE, STOCK, DESCRIPTION, PRICE, CITY, STATE, STREET, ZIP_CODE, CONSOLE_ID)
 VALUES (10, 'FIFA 30', 6, 0, 'Experience the future of football gaming with FIFA 30. Immerse yourself in a world of unparalleled realism, dynamic gameplay, and advanced features. Join the global FIFA community and compete for glory in the ultimate football simulation!', 10.0, 'Cityville', 'Stateville', '123 Main St', '12345', 1);
 
-INSERT INTO CUSTOMER (ID, NAME, EMAIL, PASSWORD) VALUES (2, 'John Doe', 'john@example.com', 'john_password')
-INSERT INTO CUSTOMER (ID, NAME, EMAIL, PASSWORD) VALUES (3, 'Jane Doe', 'jane@example.com', 'jane_password')
-INSERT INTO CUSTOMER (ID, NAME, EMAIL, PASSWORD) VALUES (4, 'Alice Johnson', 'alice@example.com', 'alice_password')
-INSERT INTO CUSTOMER (ID, NAME, EMAIL, PASSWORD) VALUES (5, 'Bob Smith', 'bob@example.com', 'bob_password')
+INSERT INTO CUSTOMER (ID, USERNAME, EMAIL, PASSWORD) VALUES (2, 'John Doe', 'john@example.com', 'john_password')
+INSERT INTO CUSTOMER (ID, USERNAME, EMAIL, PASSWORD) VALUES (3, 'Jane Doe', 'jane@example.com', 'jane_password')
+INSERT INTO CUSTOMER (ID, USERNAME, EMAIL, PASSWORD) VALUES (4, 'Alice Johnson', 'alice@example.com', 'alice_password')
+INSERT INTO CUSTOMER (ID, USERNAME, EMAIL, PASSWORD) VALUES (5, 'Bob Smith', 'bob@example.com', 'bob_password')
 
 INSERT INTO GAME_GAMETYPE(GAMES_ID, TYPES_ID) VALUES (2,1)
 INSERT INTO GAME_GAMETYPE(GAMES_ID, TYPES_ID) VALUES (3,1)
