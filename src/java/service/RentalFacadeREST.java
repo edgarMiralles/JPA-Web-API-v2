@@ -19,6 +19,8 @@ import jakarta.ws.rs.core.UriInfo;
 import java.util.List;
 import authn.Secured;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
@@ -64,7 +66,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
             priceTotal += game.getPrice();
         }
         
-        rental.setGames(games);
+        rental.setRentedGames(games);
         rental.setPrice(priceTotal);
         
         Customer tenant = em.find(Customer.class,rental.getCustomerId());
@@ -72,7 +74,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         rental.setTenant(tenant);
         
         
-        String customerId = rental.getCustomerId();
+        Long customerId = rental.getCustomerId();
 
         String rentalId = String.valueOf(customerId)+"_"+String.valueOf(em.find(Customer.class, customerId).getRentals().size());
         rental.setId(rentalId);
@@ -80,13 +82,24 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         RentalDTO rentalDTO = new RentalDTO();
         rentalDTO.setId(rental.getId()); 
         rentalDTO.setPrice(priceTotal); 
-        rentalDTO.setFinalDate(rental.getFinalDate()); 
-
+        
+        Date finalDate = addOneWeek(rental.getStartDate());
+        rentalDTO.setFinalDate(finalDate); 
+        rental.setFinalDate(finalDate);
+        
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
         uriBuilder.path(rental.getId()); 
 
         super.create(rental);   
         return Response.created(uriBuilder.build()).entity(rentalDTO).build();
+    }
+    
+    private Date addOneWeek(Date startDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+
+        calendar.add(Calendar.DAY_OF_YEAR, 7);
+        return calendar.getTime();
     }
     
     @PUT
@@ -109,14 +122,15 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     public Response find(@PathParam("id") String id) {
         
         Rental rental = super.find(id);
-        
-        RentalDTO rentalDTO = new RentalDTO();
-        rentalDTO.setId(rental.getId()); 
-        rentalDTO.setPrice(rental.getPrice()); 
-        rentalDTO.setFinalDate(rental.getFinalDate()); 
+        rental.setTenant(null);
+   
+        //RentalDTO rentalDTO = new RentalDTO();
+        //rentalDTO.setId(rental.getId()); 
+        //rentalDTO.setPrice(rental.getPrice()); 
+        //rentalDTO.setFinalDate(rental.getFinalDate()); 
 
         if (rental != null) {
-            return Response.ok().entity(rentalDTO).build();
+            return Response.ok().entity(rental).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Rental not found for id: " + id).build();
         }
@@ -128,15 +142,19 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Rental> findAll() {
                 
-        ArrayList rentalsDTO = new ArrayList();
+        List rentals = super.findAll();
         for(Rental rental : super.findAll()){
+            rental.setTenant(null);
+        }
+        
+        /*for(Rental rental : super.findAll()){
             RentalDTO rentalDTO = new RentalDTO();
             rentalDTO.setId(rental.getId()); 
             rentalDTO.setPrice(rental.getPrice()); 
             rentalDTO.setFinalDate(rental.getFinalDate()); 
             rentalsDTO.add(rentalDTO);
-        }
-        return rentalsDTO;
+        }*/
+        return rentals;
     }
 
     @GET

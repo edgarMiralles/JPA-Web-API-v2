@@ -17,7 +17,7 @@ import model.entities.Rental;
  * @author edgar
  */
 public class PostRentalParams {
-    private String customerId;
+    private Long customerId;
     private Collection<Long> gameIds;
     private Rental rental;
     
@@ -27,11 +27,11 @@ public class PostRentalParams {
         this.rental = rental;
     }
     
-    public String getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
@@ -87,9 +87,6 @@ public class PostRentalParams {
         int rentalValidated = validatedRental();
         if (rentalValidated == -1){
             return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Final Date must be a valid value").build();
-        }else if (rentalValidated == -2){
-            return Response.status(Response.Status.BAD_REQUEST)
                         .entity("Price must be a valid value").build();
         }
         
@@ -97,7 +94,7 @@ public class PostRentalParams {
     }
 
     private int validateCustomer(EntityManager em) {
-        if (this.customerId==null || this.customerId.isEmpty()) {
+        if (this.customerId==null || this.customerId==0) {
             return -1;            
         }
         if (em.find(Customer.class, this.customerId)==null)
@@ -140,10 +137,8 @@ public class PostRentalParams {
     }
     
     private int validatedRental(){
-        if(this.rental.getFinalDate() == null){
+        if(Float.toString(this.rental.getPrice()).isEmpty() || Float.toString(this.rental.getPrice())==null){
             return -1;
-        }else if(Float.toString(this.rental.getPrice()).isEmpty() || Float.toString(this.rental.getPrice())==null){
-            return -2;
         }
         return 0;
     }

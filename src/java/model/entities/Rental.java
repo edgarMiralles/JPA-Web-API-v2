@@ -53,7 +53,7 @@ public class Rental implements Serializable {
     private Collection<Long> gameId;
     @Transient
     @NotNull
-    private String customerId;
+    private Long customerId;
     
     @ManyToMany(cascade = CascadeType.PERSIST)
     private Collection<Game> rentedGames;
@@ -69,11 +69,11 @@ public class Rental implements Serializable {
         this.id = id;
     }
     
-    public String getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String id) {
+    public void setCustomerId(Long id) {
         this.customerId = id;
     }
 
@@ -92,9 +92,7 @@ public class Rental implements Serializable {
     public void setRentedGames(Collection<Game> rentedGames) {
         this.rentedGames = rentedGames;
     }
-    
-    
-    
+
     public float getPrice() {
         return price;
     }
@@ -117,14 +115,6 @@ public class Rental implements Serializable {
     
     public void setFinalDate(Date finalDate) {
         this.finalDate = finalDate;
-    }
-
-    public Collection<Game> getGames() {
-        return rentedGames;
-    }
-
-    public void setGames(Collection<Game> games) {
-        this.rentedGames = games;
     }
 
     public Customer getTenant() {
