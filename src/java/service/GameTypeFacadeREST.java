@@ -133,6 +133,16 @@ public class GameTypeFacadeREST extends AbstractFacade<GameType> {
     public String countREST() {
         return String.valueOf(super.count());
     }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response getAll() {
+        Query findAll = em.createNamedQuery("GameType.findAll", GameType.class);
+
+        List<GameType> consoles = findAll.getResultList();
+
+        return Response.ok().entity(consoles).build();  
+    }
 
     
     @Override
