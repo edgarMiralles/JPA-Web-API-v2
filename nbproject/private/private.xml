@@ -2,6 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< Updated upstream
         <group/>
+=======
+        <group>
+            <file>file:/home/edgar/Escritorio/SOB/SOB_P1_Edgar_Jordi/projecte/src/java/service/ConsoleFacadeREST.java</file>
+            <file>file:/home/edgar/Escritorio/SOB/SOB_P1_Edgar_Jordi/projecte/src/java/service/AbstractFacade.java</file>
+            <file>file:/home/edgar/Escritorio/SOB/SOB_P1_Edgar_Jordi/projecte/src/java/model/entities/Console.java</file>
+            <file>file:/home/edgar/Escritorio/SOB/SOB_P1_Edgar_Jordi/projecte/src/java/utilities/db.sql</file>
+            <file>file:/home/edgar/Escritorio/SOB/SOB_P1_Edgar_Jordi/projecte/src/java/model/entities/Customer.java</file>
+            <file>file:/home/edgar/Escritorio/SOB/SOB_P1_Edgar_Jordi/projecte/src/java/service/CustomerFacadeREST.java</file>
+            <file>file:/home/edgar/Escritorio/SOB/SOB_P1_Edgar_Jordi/projecte/src/java/model/entities/CustomerDTO.java</file>
+            <file>file:/home/edgar/Escritorio/SOB/SOB_P1_Edgar_Jordi/projecte/src/java/service/GameFacadeREST.java</file>
+        </group>
+>>>>>>> Stashed changes
     </open-files>
 </project-private>

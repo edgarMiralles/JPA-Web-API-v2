@@ -25,6 +25,8 @@ import jakarta.persistence.NamedQuery;
 @NamedQueries({
     @NamedQuery(name = "GameType.findIn",
         query = "SELECT g FROM GameType g WHERE g.id IN :ids"),
+    @NamedQuery(name = "GameType.findAll",
+                query = "SELECT g FROM GameType g"),
     @NamedQuery(name = "GameType.findById",
         query = "SELECT g FROM GameType g WHERE g.id = :id")
 })

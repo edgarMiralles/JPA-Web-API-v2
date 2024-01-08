@@ -15,7 +15,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import authn.Secured;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.BeanParam;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
@@ -108,7 +111,9 @@ public class GameFacadeREST extends AbstractFacade<Game> {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response findByDetails(
-            @BeanParam GetGameParams filterParams) {
+            @BeanParam GetGameParams filterParams,
+            @QueryParam("page") @DefaultValue("1") int page,
+            @QueryParam("pageSize") @DefaultValue("9") int pageSize){
         List<Game> games;
 
         List<Long> typeIds = filterParams.getTypeIds();
@@ -118,24 +123,27 @@ public class GameFacadeREST extends AbstractFacade<Game> {
         if (validationResponse != null) {
             return validationResponse;
         }
+        
+        System.out.println("pipipi" + typeIds);
+
+        TypedQuery<Game> query;
+        int offset = (page - 1) * pageSize;
 
         if (!typeIds.isEmpty() && consoleId != null) {
-            games = em.createNamedQuery("Game.findByTypesAndConsole", Game.class)
+            query = em.createNamedQuery("Game.findByTypesAndConsole", Game.class)
                     .setParameter("typeIds", typeIds)
-                    .setParameter("consoleId", consoleId)
-                    .getResultList();
+                    .setParameter("consoleId", consoleId);
         } else if (!typeIds.isEmpty()) {
-            games = em.createNamedQuery("Game.findByTypes", Game.class)
-                    .setParameter("typeIds", typeIds)
-                    .getResultList();
+            query = em.createNamedQuery("Game.findByTypes", Game.class)
+                    .setParameter("typeIds", typeIds);
         } else if (consoleId != null) {
-            games = em.createNamedQuery("Game.findByConsole", Game.class)
-                    .setParameter("consoleId", consoleId)
-                    .getResultList();
+            query = em.createNamedQuery("Game.findByConsole", Game.class)
+                    .setParameter("consoleId", consoleId);
         } else {
-            games = em.createNamedQuery("Game.findAll", Game.class).getResultList();
+            query = em.createNamedQuery("Game.findAll", Game.class);
         }
 
+        games = query.setFirstResult(offset).setMaxResults(pageSize).getResultList();
         if (games.isEmpty()) {
             return Response.noContent().build();
         }
