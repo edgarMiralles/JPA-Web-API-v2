@@ -60,7 +60,7 @@ public class Game implements Serializable {
     private String name;
     private int stock;
     
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String description;
     private float price;
     
