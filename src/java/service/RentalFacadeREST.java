@@ -136,12 +136,12 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     @GET
     @Secured
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Rental> findAll(@QueryParam("userId") Long idUser) {
-                
+    public List<Rental> findAll(@QueryParam("userId") String idUser) {
+        Long idUserAux = Long.parseLong(idUser);
         List<Rental> rentalsReturn = new ArrayList<Rental>();
         List<Rental> rentals = super.findAll();
         for(Rental rental : rentals){
-            if(rental.getTenant().getId()==idUser){
+            if(rental.getTenant().getId()==idUserAux){
                 rental.setTenant(null);
                 rental.setCustomerId(null);
                 rentalsReturn.add(rental);
