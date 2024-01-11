@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.util.List;
 import authn.Secured;
+import jakarta.ws.rs.QueryParam;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -123,11 +124,6 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         
         Rental rental = super.find(id);
         rental.setTenant(null);
-   
-        //RentalDTO rentalDTO = new RentalDTO();
-        //rentalDTO.setId(rental.getId()); 
-        //rentalDTO.setPrice(rental.getPrice()); 
-        //rentalDTO.setFinalDate(rental.getFinalDate()); 
 
         if (rental != null) {
             return Response.ok().entity(rental).build();
@@ -138,24 +134,20 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
 
 
     @GET
-    @Override
+    @Secured
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Rental> findAll() {
+    public List<Rental> findAll(@QueryParam("userId") Long idUser) {
                 
-        List rentals = super.findAll();
-        for(Rental rental : super.findAll()){
-            rental.setTenant(null);
-            rental.setCustomerId(null);
+        List<Rental> rentalsReturn = new ArrayList<Rental>();
+        List<Rental> rentals = super.findAll();
+        for(Rental rental : rentals){
+            if(rental.getTenant().getId()==idUser){
+                rental.setTenant(null);
+                rental.setCustomerId(null);
+                rentalsReturn.add(rental);
+            }
         }
-        
-        /*for(Rental rental : super.findAll()){
-            RentalDTO rentalDTO = new RentalDTO();
-            rentalDTO.setId(rental.getId()); 
-            rentalDTO.setPrice(rental.getPrice()); 
-            rentalDTO.setFinalDate(rental.getFinalDate()); 
-            rentalsDTO.add(rentalDTO);
-        }*/
-        return rentals;
+        return rentalsReturn;
     }
 
     @GET
