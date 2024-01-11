@@ -26,7 +26,9 @@ import jakarta.persistence.OneToMany;
     @NamedQuery(name = "Customer.findByEmail",
                 query = "SELECT c FROM Customer c WHERE c.email = :email"),
     @NamedQuery(name = "Customer.findCustomers",
-                query = "SELECT c FROM Customer c")    
+                query = "SELECT c FROM Customer c"),
+    @NamedQuery(name = "Customer.findByUsername",
+                query = "SELECT c FROM Customer c WHERE c.username = :username"),    
 })
 @Entity
 public class Customer implements Serializable {

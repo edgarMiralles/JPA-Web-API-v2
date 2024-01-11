@@ -145,6 +145,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         List rentals = super.findAll();
         for(Rental rental : super.findAll()){
             rental.setTenant(null);
+            rental.setCustomerId(null);
         }
         
         /*for(Rental rental : super.findAll()){

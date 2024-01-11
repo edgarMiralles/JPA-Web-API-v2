@@ -18,6 +18,7 @@ import jakarta.ws.rs.ext.Provider;
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.container.ResourceInfo;
+import model.entities.Customer;
 
 /**
  * @author Marc Sanchez
@@ -49,14 +50,14 @@ public class RESTRequestFilter implements ContainerRequestFilter {
                 if(headers != null && !headers.isEmpty())
                 {
                     String username;
-                    String password;
+                    String email;
                     try {
                         String auth = headers.get(0);
                         auth = auth.replace(AUTHORIZATION_HEADER_PREFIX, "");
                         String decode = Base64.base64Decode(auth);
                         StringTokenizer tokenizer = new StringTokenizer(decode, ":");
                         username = tokenizer.nextToken();
-                        password = tokenizer.nextToken();
+                        email = tokenizer.nextToken();
                     } catch(@SuppressWarnings("unused") Exception e){
                         requestCtx.abortWith(
                                 Response.status(Response.Status.BAD_REQUEST)
@@ -66,10 +67,10 @@ public class RESTRequestFilter implements ContainerRequestFilter {
                     }
                     
                     try {
-                        TypedQuery<Credentials> query = em.createNamedQuery("Credentials.findUser", Credentials.class);
-                        Credentials c = query.setParameter("username", username)
+                        TypedQuery<Customer> query = em.createNamedQuery("Customer.findByUsername", Customer.class);
+                        Customer c = query.setParameter("username", username)
                             .getSingleResult();
-                        if(!c.getPassword().equals(password)) {
+                        if(!c.getEmail().equals(email)) {
                             requestCtx.abortWith(
                                 Response.status(Response.Status.FORBIDDEN)
                                         .entity("Invalid credentials").build()
