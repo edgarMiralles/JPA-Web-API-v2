@@ -49,10 +49,8 @@ public class Rental implements Serializable {
     private Date finalDate;
     
     @Transient
-    @NotNull
     private Collection<Long> gameId;
     @Transient
-    @NotNull
     private Long customerId;
     
     @ManyToMany(cascade = CascadeType.PERSIST)
