@@ -21,6 +21,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import model.entities.Customer;
 import model.entities.CustomerDTO;
+import utilities.SecurityUtil;
 
 /**
  * Author:  jordi
@@ -146,6 +147,34 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
             // Manejar el caso donde no se encuentra el cliente
             return Response.status(Response.Status.NOT_FOUND).entity("Theres is not customers with id: "+email).build();
         }  
+    }
+    
+    @POST
+    @Path("validate")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response findByEmail(Customer customer) {
+        if (customer.getEmail() == null || customer.getPassword() == null) {
+            // Datos insuficientes proporcionados
+            return Response.status(Response.Status.BAD_REQUEST).entity("Email y contraseña requeridos").build();
+        }
+        try {
+            Query findCustomerByEmail = em.createNamedQuery("Customer.findByEmail"); 
+            findCustomerByEmail.setParameter("email",customer.getEmail());
+            Customer foundCustomer = (Customer) findCustomerByEmail.getSingleResult();
+            System.out.println("Nueva "+customer.getPassword());
+            System.out.println("Guardada "+foundCustomer.getPassword());
+
+            if (SecurityUtil.validatePassword(customer.getPassword(), foundCustomer.getPassword())) {
+                System.out.println("Soy una mosca");
+                return Response.ok(foundCustomer).build();
+            } else {
+                // Cliente no encontrado o contraseña incorrecta
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Cliente no encontrado o contraseña incorrecta").build();
+            }
+        } catch (Exception e) {
+            // Manejo de excepciones, como NoResultException
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Cliente no encontrado o contraseña incorrecta").build();
+        }
     }
 
     @Override
