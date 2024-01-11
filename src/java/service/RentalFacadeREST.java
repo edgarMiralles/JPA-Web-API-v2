@@ -71,6 +71,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         rental.setPrice(priceTotal);
         
         Customer tenant = em.find(Customer.class,rental.getCustomerId());
+        System.out.print(tenant);
         tenant.getRentals().add(rental);
         rental.setTenant(tenant);
         
@@ -90,6 +91,8 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
         uriBuilder.path(rental.getId()); 
+        System.out.print(rental);
+        System.out.print(rental.getTenant());
 
         super.create(rental);   
         return Response.created(uriBuilder.build()).entity(rentalDTO).build();
@@ -143,7 +146,6 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         for(Rental rental : rentals){
             if(rental.getTenant().getId()==idUserAux){
                 rental.setTenant(null);
-                rental.setCustomerId(null);
                 rentalsReturn.add(rental);
             }
         }
