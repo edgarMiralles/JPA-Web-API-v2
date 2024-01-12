@@ -30,6 +30,7 @@ import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
 import model.entities.RentalDTO;
+import model.entities.RentalGameQuantity;
 import validation.PostRentalParams;
 /**
  * Author:  jordi
@@ -54,7 +55,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         if (rental == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
         }
-        
+
         PostRentalParams rentalValidator = new PostRentalParams(rental);
         Response validationResponse = rentalValidator.handleValidationErrors(em);
         if (validationResponse != null) {
@@ -68,19 +69,40 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
                 .getResultList();
 
         float priceTotal = 0;
+
+        List<RentalGameQuantity> rentalGameQuantities = new ArrayList<>();
+
         for (Game game : games) {
             int occurrences = Collections.frequency(gameIds, game.getId());
+
             if (game.getStock() >= occurrences) {
                 int newRentedCount = occurrences;
-                game.setRentedCount(newRentedCount);
+
+                // Actualizar la cantidad de stock y crear una nueva RentalGameQuantity
                 game.setStock(game.getStock() - occurrences);
+
+                // Crear una nueva instancia de RentalGameQuantity y establecer las relaciones
+                RentalGameQuantity rentalGameQuantity = new RentalGameQuantity();
+                rentalGameQuantity.setGame(game);
+                rentalGameQuantity.setQuantity(newRentedCount);
+                rentalGameQuantity.setRental(rental);
+
+                // Agregar la RentalGameQuantity a la lista
+                rentalGameQuantities.add(rentalGameQuantity);
+
                 priceTotal += game.getPrice() * occurrences;
-            }else{
+            } else {
+                // Revertir los cambios en caso de no haber suficiente stock
+                for (RentalGameQuantity rentalGameQuantity : rentalGameQuantities) {
+                    Game rentedGame = rentalGameQuantity.getGame();
+                    rentedGame.setStock(rentedGame.getStock() + rentalGameQuantity.getQuantity());
+                }
+
                 return Response.status(Response.Status.BAD_REQUEST).entity("Stock of game '" + game.getName() + "' is depleted.").build();
             }
         }
-
         rental.setRentedGames(games);
+        rental.setRentalGameQuantities(rentalGameQuantities);
         rental.setPrice(priceTotal);
         
         Customer tenant = em.createNamedQuery("Customer.findById",Customer.class)

@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -63,6 +64,17 @@ public class Rental implements Serializable {
     @JsonbTransient
     private Customer tenant;
         
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<RentalGameQuantity> rentalGameQuantities;
+
+    public Collection<RentalGameQuantity> getRentalGameQuantities() {
+        return rentalGameQuantities;
+    }
+
+    public void setRentalGameQuantities(Collection<RentalGameQuantity> rentalGameQuantities) {
+        this.rentalGameQuantities = rentalGameQuantities;
+    }
+    
     public String getId() {
         return id;
     }
