@@ -5,6 +5,7 @@
 package model.entities;
 
 import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,8 +42,7 @@ public class Customer implements Serializable {
     private String email;
     private String password;
     
-    @OneToMany(mappedBy="tenant")
-    @JsonbTransient
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL)
     private Collection<Rental> rentals;
     
     public Customer(){

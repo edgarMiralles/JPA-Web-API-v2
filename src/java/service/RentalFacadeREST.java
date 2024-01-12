@@ -21,7 +21,11 @@ import authn.Secured;
 import jakarta.ws.rs.QueryParam;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
@@ -57,22 +61,30 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
             return validationResponse;
         }
 
+        Collection<Long> gameIds = rental.getGameId();
+
         List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
-                .setParameter("ids", rental.getGameId())
+                .setParameter("ids", gameIds)
                 .getResultList();
 
         float priceTotal = 0;
-        for(Game game : games){                
-            game.setStock(game.getStock() - 1);
-            priceTotal += game.getPrice();
+        for (Game game : games) {
+            int occurrences = Collections.frequency(gameIds, game.getId());
+            int newRentedCount = game.getRentedCount() + occurrences;
+            game.setRentedCount(newRentedCount);
+            game.setStock(game.getStock() - occurrences);
+            priceTotal += game.getPrice() * occurrences;
         }
-        
+
         rental.setRentedGames(games);
         rental.setPrice(priceTotal);
         
-        Customer tenant = em.find(Customer.class,rental.getCustomerId());
-        tenant.getRentals().add(rental);
+        Customer tenant = em.createNamedQuery("Customer.findById",Customer.class)
+                .setParameter("id", rental.getCustomerId())
+                .getSingleResult();
         rental.setTenant(tenant);
+        rental.setCustomerId(tenant.getId());
+        tenant.getRentals().add(rental);
         
         
         Long customerId = rental.getCustomerId();
@@ -123,8 +135,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     public Response find(@PathParam("id") String id) {
         
         Rental rental = super.find(id);
-        rental.setTenant(null);
-
+        
         if (rental != null) {
             return Response.ok().entity(rental).build();
         } else {
@@ -142,8 +153,6 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         List<Rental> rentals = super.findAll();
         for(Rental rental : rentals){
             if(rental.getTenant().getId()==idUser){
-                rental.setTenant(null);
-                rental.setCustomerId(null);
                 rentalsReturn.add(rental);
             }
         }
