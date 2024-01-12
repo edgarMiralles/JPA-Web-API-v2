@@ -155,7 +155,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         List<Rental> rentalsReturn = new ArrayList<Rental>();
         List<Rental> rentals = super.findAll();
         for(Rental rental : rentals){
-            if(rental.getTenant().getId()==idUser){
+            if(rental.getTenant().getId()==idUserAux){
                 rentalsReturn.add(rental);
             }
         }
