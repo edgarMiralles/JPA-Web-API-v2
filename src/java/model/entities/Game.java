@@ -59,6 +59,7 @@ public class Game implements Serializable {
 
     private String name;
     private int stock;
+    private int rentedCount;
     
     @Column(length = 2000)
     private String description;
@@ -88,7 +89,15 @@ public class Game implements Serializable {
     
     @JoinColumn(name = "IMAGE")
     private long image;
+    
+    public int getRentedCount() {
+        return rentedCount;
+    }
 
+    public void setRentedCount(int rentedCount) {
+        this.rentedCount = rentedCount;
+    }
+    
     public long getImage() {
         return image;
     }

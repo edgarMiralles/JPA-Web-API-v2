@@ -22,7 +22,7 @@ import java.util.Date;
 public class CustomerDTO implements Serializable{
 private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private long id;
     private String username;
     private String email;
     private Collection<Rental> rentals;

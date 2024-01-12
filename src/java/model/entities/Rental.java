@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model.entities;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
 import java.io.Serializable;
 import jakarta.persistence.Entity;
@@ -11,10 +12,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.Date;
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -51,14 +54,27 @@ public class Rental implements Serializable {
     @Transient
     private Collection<Long> gameId;
     @Transient
-    private Long customerId;
+    private long customerId;
     
     @ManyToMany(cascade = CascadeType.PERSIST)
     private Collection<Game> rentedGames;
     
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
+    @JoinColumn(name = "TENANT_ID")
+    @JsonbTransient
     private Customer tenant;
         
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<RentalGameQuantity> rentalGameQuantities;
+
+    public Collection<RentalGameQuantity> getRentalGameQuantities() {
+        return rentalGameQuantities;
+    }
+
+    public void setRentalGameQuantities(Collection<RentalGameQuantity> rentalGameQuantities) {
+        this.rentalGameQuantities = rentalGameQuantities;
+    }
+    
     public String getId() {
         return id;
     }
@@ -67,11 +83,11 @@ public class Rental implements Serializable {
         this.id = id;
     }
     
-    public Long getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long id) {
+    public void setCustomerId(long id) {
         this.customerId = id;
     }
 
@@ -122,10 +138,11 @@ public class Rental implements Serializable {
     public void setTenant(Customer tenant) {
         this.tenant = tenant;
     }
-    
+
     @Override
     public String toString() {
-        return "Rental[ id=" + id + " ]";
+        return "Rental{" + "id=" + id + ", price=" + price + ", startDate=" + startDate + ", finalDate=" + finalDate + ", gameId=" + gameId + ", customerId=" + customerId + '}';
     }
+
     
 }

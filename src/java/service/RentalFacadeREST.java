@@ -21,11 +21,16 @@ import authn.Secured;
 import jakarta.ws.rs.QueryParam;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import model.entities.Customer;
 import model.entities.Game;
 import model.entities.Rental;
 import model.entities.RentalDTO;
+import model.entities.RentalGameQuantity;
 import validation.PostRentalParams;
 /**
  * Author:  jordi
@@ -50,29 +55,63 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         if (rental == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("The JSON payload is null.").build();
         }
-        
+
         PostRentalParams rentalValidator = new PostRentalParams(rental);
         Response validationResponse = rentalValidator.handleValidationErrors(em);
         if (validationResponse != null) {
             return validationResponse;
         }
 
+        Collection<Long> gameIds = rental.getGameId();
+
         List<Game> games = em.createNamedQuery("Game.findIn", Game.class)
-                .setParameter("ids", rental.getGameId())
+                .setParameter("ids", gameIds)
                 .getResultList();
 
         float priceTotal = 0;
-        for(Game game : games){                
-            game.setStock(game.getStock() - 1);
-            priceTotal += game.getPrice();
+
+        List<RentalGameQuantity> rentalGameQuantities = new ArrayList<>();
+
+        for (Game game : games) {
+            int occurrences = Collections.frequency(gameIds, game.getId());
+
+            if (game.getStock() >= occurrences) {
+                int newRentedCount = occurrences;
+
+                // Actualizar la cantidad de stock y crear una nueva RentalGameQuantity
+                game.setStock(game.getStock() - occurrences);
+
+                // Crear una nueva instancia de RentalGameQuantity y establecer las relaciones
+                RentalGameQuantity rentalGameQuantity = new RentalGameQuantity();
+                rentalGameQuantity.setGame(game);
+                rentalGameQuantity.setQuantity(newRentedCount);
+                rentalGameQuantity.setRental(rental);
+
+                // Agregar la RentalGameQuantity a la lista
+                rentalGameQuantities.add(rentalGameQuantity);
+
+                priceTotal += game.getPrice() * occurrences;
+            } else {
+                // Revertir los cambios en caso de no haber suficiente stock
+                for (RentalGameQuantity rentalGameQuantity : rentalGameQuantities) {
+                    Game rentedGame = rentalGameQuantity.getGame();
+                    rentedGame.setStock(rentedGame.getStock() + rentalGameQuantity.getQuantity());
+                }
+
+                return Response.status(Response.Status.BAD_REQUEST).entity("Stock of game '" + game.getName() + "' is depleted.").build();
+            }
         }
-        
         rental.setRentedGames(games);
+        rental.setRentalGameQuantities(rentalGameQuantities);
         rental.setPrice(priceTotal);
         
-        Customer tenant = em.find(Customer.class,rental.getCustomerId());
-        tenant.getRentals().add(rental);
+        Customer tenant = em.createNamedQuery("Customer.findById",Customer.class)
+                .setParameter("id", rental.getCustomerId())
+                .getSingleResult();
+
         rental.setTenant(tenant);
+        rental.setCustomerId(tenant.getId());
+        tenant.getRentals().add(rental);
         
         
         Long customerId = rental.getCustomerId();
@@ -90,6 +129,8 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
         uriBuilder.path(rental.getId()); 
+        System.out.print(rental);
+        System.out.print(rental.getTenant());
 
         super.create(rental);   
         return Response.created(uriBuilder.build()).entity(rentalDTO).build();
@@ -123,8 +164,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     public Response find(@PathParam("id") String id) {
         
         Rental rental = super.find(id);
-        rental.setTenant(null);
-
+        
         if (rental != null) {
             return Response.ok().entity(rental).build();
         } else {
@@ -136,14 +176,12 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     @GET
     @Secured
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Rental> findAll(@QueryParam("userId") Long idUser) {
-                
+    public List<Rental> findAll(@QueryParam("userId") String idUser) {
+        Long idUserAux = Long.parseLong(idUser);
         List<Rental> rentalsReturn = new ArrayList<Rental>();
         List<Rental> rentals = super.findAll();
         for(Rental rental : rentals){
-            if(rental.getTenant().getId()==idUser){
-                rental.setTenant(null);
-                rental.setCustomerId(null);
+            if(rental.getTenant().getId()==idUserAux){
                 rentalsReturn.add(rental);
             }
         }
