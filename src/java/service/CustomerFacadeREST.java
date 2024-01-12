@@ -59,7 +59,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
             }
 
             Query findCustomerId = em.createNamedQuery("Customer.findById");
-            findCustomerId.setParameter("id", id);
+            findCustomerId.setParameter("id", Long.valueOf(id));
 
             try {
                 Customer existingCustomer = (Customer) findCustomerId.getSingleResult();
@@ -140,9 +140,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
             Query findCustomerByEmail = em.createNamedQuery("Customer.findByEmail"); 
             findCustomerByEmail.setParameter("email",email);
             Customer customerFound = (Customer) findCustomerByEmail.getSingleResult();
-            
-            CustomerDTO customer = new CustomerDTO(customerFound);
-            return Response.ok().entity(customer).build();
+                        return Response.ok().entity(customerFound).build();
         } catch (NoResultException e) {
             // Manejar el caso donde no se encuentra el cliente
             return Response.status(Response.Status.NOT_FOUND).entity("Theres is not customers with id: "+email).build();
