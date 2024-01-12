@@ -36,7 +36,7 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
     
     private String username;
     private String email;
@@ -92,7 +92,8 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer[ name=" + username + " ]";
+        return "Customer{" + "id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + ", rentals=" + rentals + '}';
     }
+
     
 }

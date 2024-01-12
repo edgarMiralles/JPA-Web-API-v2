@@ -82,6 +82,7 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         Customer tenant = em.createNamedQuery("Customer.findById",Customer.class)
                 .setParameter("id", rental.getCustomerId())
                 .getSingleResult();
+
         rental.setTenant(tenant);
         rental.setCustomerId(tenant.getId());
         tenant.getRentals().add(rental);
@@ -102,6 +103,8 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
         uriBuilder.path(rental.getId()); 
+        System.out.print(rental);
+        System.out.print(rental.getTenant());
 
         super.create(rental);   
         return Response.created(uriBuilder.build()).entity(rentalDTO).build();
@@ -147,8 +150,8 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
     @GET
     @Secured
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Rental> findAll(@QueryParam("userId") Long idUser) {
-                
+    public List<Rental> findAll(@QueryParam("userId") String idUser) {
+        Long idUserAux = Long.parseLong(idUser);
         List<Rental> rentalsReturn = new ArrayList<Rental>();
         List<Rental> rentals = super.findAll();
         for(Rental rental : rentals){
