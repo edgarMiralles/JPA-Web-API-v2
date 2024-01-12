@@ -70,10 +70,14 @@ public class RentalFacadeREST extends AbstractFacade<Rental> {
         float priceTotal = 0;
         for (Game game : games) {
             int occurrences = Collections.frequency(gameIds, game.getId());
-            int newRentedCount = game.getRentedCount() + occurrences;
-            game.setRentedCount(newRentedCount);
-            game.setStock(game.getStock() - occurrences);
-            priceTotal += game.getPrice() * occurrences;
+            if (game.getStock() >= occurrences) {
+                int newRentedCount = occurrences;
+                game.setRentedCount(newRentedCount);
+                game.setStock(game.getStock() - occurrences);
+                priceTotal += game.getPrice() * occurrences;
+            }else{
+                return Response.status(Response.Status.BAD_REQUEST).entity("Stock of game '" + game.getName() + "' is depleted.").build();
+            }
         }
 
         rental.setRentedGames(games);
