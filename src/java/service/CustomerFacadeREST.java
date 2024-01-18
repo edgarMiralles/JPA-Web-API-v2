@@ -43,7 +43,6 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Customer entity) {
-        System.out.println("Gordito: "+entity.getPassword());
         super.create(entity);
     }
 
